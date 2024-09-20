@@ -27,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<UserDTO> getUser(@PathVariable int id){
+    public ResponseEntity<UserDTO> getUser(@PathVariable int id) {
         return new ResponseEntity<>(service.getUserById(id), HttpStatus.OK);
     }
 
@@ -35,6 +35,20 @@ public class UserController {
     public ResponseEntity<Void> createUser(@Valid @RequestBody UserCreationDTO creationForm) {
         service.createUser(creationForm);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping(value ="/delete")
+    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
+        service.deleteUser(id);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/update/email")
+    public ResponseEntity<Void> updateEmail(@PathVariable int id, String newEmail) {
+        service.updateEmail(id, newEmail);
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 }

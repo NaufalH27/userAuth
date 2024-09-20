@@ -67,10 +67,20 @@ public class UserServiceImpl implements UserService {
         entity.setEmail(creationForm.getEmail());
         String hashedPassword = PasswordUtils.hashPassword(creationForm.getPassword());
         entity.setPasswordHash(hashedPassword);
-        repository.save(entity);
+        repository.createUser(entity);
     }
 
+    @Override
+    public void updateEmail(int id, String newEmail){
+        repository.updateEmail(id, newEmail);
+        
+    }
 
+    @Override
+    public void deleteUser(int id){
+        repository.deleteUser(id);
+    }
+    
     
 
 }

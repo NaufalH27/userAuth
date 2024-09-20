@@ -8,5 +8,6 @@ public interface UserService {
     public UserDTO getUserByEmail(String email);
     public UserDTO getUserByName(String name);
     public void createUser(UserCreationDTO creationForm);
-    
+    public void updateEmail(int id, String newEmail);
+    public void deleteUser(int id);
 }

@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "users", 
@@ -24,7 +23,6 @@ public class UserEntity {
     private Long id;
     
     @Column(name = "name", nullable=false)
-    @Pattern(regexp = "^[a-zA-Z0-9._-]+$")
     private String name;
 
     @Column(name = "email")
