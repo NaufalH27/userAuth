@@ -5,22 +5,20 @@ import org.springframework.stereotype.Service;
 
 import io.userauth.data.entities.UserEntity;
 import io.userauth.data.repositories.UserRepository;
-import io.userauth.mapper.Mapper;
 import io.userauth.presentation.dto.user.UserCreationDTO;
 import io.userauth.presentation.dto.user.UserDTO;
 import io.userauth.util.PasswordUtils;
+import io.userauth.util.UserDTOMapper;
 
 
 @Service
 public class UserServiceImpl implements UserService {
 
     private final UserRepository repository;
-    private final Mapper<UserEntity, UserDTO> mapper;
 
     @Autowired
-    public UserServiceImpl(UserRepository repository, Mapper<UserEntity, UserDTO> mapper){
+    public UserServiceImpl(UserRepository repository){
         this.repository = repository;
-        this.mapper = mapper;
     }
 
     @Override
@@ -29,7 +27,7 @@ public class UserServiceImpl implements UserService {
         if (entity == null){
             throw new IllegalArgumentException("user not found");
         }
-        return mapper.toDTO(entity);
+        return UserDTOMapper.toDTO(entity);
     }
 
     @Override
@@ -38,7 +36,7 @@ public class UserServiceImpl implements UserService {
         if (entity == null){
             throw new IllegalArgumentException("user not found");
         }
-        return mapper.toDTO(entity);
+        return UserDTOMapper.toDTO(entity);
     }
 
     @Override
@@ -47,7 +45,7 @@ public class UserServiceImpl implements UserService {
         if (entity == null){
             throw new IllegalArgumentException("user not found");
         }
-        return mapper.toDTO(entity);
+        return UserDTOMapper.toDTO(entity);
     }
     
 

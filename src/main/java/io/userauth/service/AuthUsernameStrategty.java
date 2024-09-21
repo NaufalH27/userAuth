@@ -4,20 +4,17 @@ import org.springframework.stereotype.Service;
 
 import io.userauth.data.entities.UserEntity;
 import io.userauth.data.repositories.UserRepository;
-import io.userauth.mapper.UserMapper;
 import io.userauth.presentation.dto.auth.LoginUsernameDTO;
 import io.userauth.presentation.dto.user.UserDTO;
 import io.userauth.util.PasswordUtils;
+import io.userauth.util.UserDTOMapper;
 
 @Service
 public class AuthUsernameStrategty implements AuthStrategy {
-
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
 
-    public AuthUsernameStrategty(UserRepository userRepository, UserMapper userMapper){
+    public AuthUsernameStrategty(UserRepository userRepository){
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
     }
 
     @Override
@@ -32,7 +29,7 @@ public class AuthUsernameStrategty implements AuthStrategy {
             throw new IllegalArgumentException("incorect password");
         }
     
-       return userMapper.toDTO(entity);
+       return UserDTOMapper.toDTO(entity);
     }
 
 

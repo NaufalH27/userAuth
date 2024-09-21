@@ -2,20 +2,18 @@ package io.userauth.service;
 
 import io.userauth.data.entities.UserEntity;
 import io.userauth.data.repositories.UserRepository;
-import io.userauth.mapper.UserMapper;
 import io.userauth.presentation.dto.auth.LoginEmailDTO;
 import io.userauth.presentation.dto.user.UserDTO;
 import io.userauth.util.PasswordUtils;
+import io.userauth.util.UserDTOMapper;
 
 
 public class AuthEmailStrategy implements AuthStrategy{
     
     private final UserRepository userRepository;
-    private final UserMapper userMapper;
 
-    public AuthEmailStrategy(UserRepository userRepository, UserMapper userMapper){
+    public AuthEmailStrategy(UserRepository userRepository){
         this.userRepository = userRepository;
-        this.userMapper = userMapper;
     }
 
     @Override
@@ -31,6 +29,6 @@ public class AuthEmailStrategy implements AuthStrategy{
             throw new IllegalArgumentException("email password");
         }
 
-        return userMapper.toDTO(entity);    
+        return UserDTOMapper.toDTO(entity);    
     }
 }
