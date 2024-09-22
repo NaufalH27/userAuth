@@ -17,7 +17,7 @@ public class AuthFactory {
     }
 
 
-    public AuthStrategy cerateAuth(String param){
+    public AuthStrategy createAuth(String param){
         if("username".equals(param)){
             return new AuthUsernameStrategty(userRepository);
         }else if("email".equals(param)){

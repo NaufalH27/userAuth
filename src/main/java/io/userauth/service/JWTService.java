@@ -10,7 +10,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import io.userauth.presentation.dto.user.UserDTO;
 
 
 @Service
@@ -19,12 +18,11 @@ public class JWTService{
     @Value("${jwt.secret}")
     private String secretKey;
 
-    public String generateToken(UserDTO user) {
+    public String generateToken(AuthResult userData) {
         return Jwts.builder()
                 .setIssuer("userauth")
-                .setSubject(user.getName())
-                .claim("id", user.getId())
-                .claim("email", user.getEmail())
+                .setSubject(userData.getUserDetails().getUsername())
+                .setClaims(userData.getClaims())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();

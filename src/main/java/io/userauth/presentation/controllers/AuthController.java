@@ -30,13 +30,13 @@ public class AuthController {
 
     @PostMapping(value = "/login/username")
     public ResponseEntity<?> getAuthenticationByName(@RequestBody LoginUsernameDTO loginForm, HttpServletResponse response){
-        authService.authenticate(authFactory.cerateAuth("username"), loginForm, response);
+        authService.authenticate(authFactory.createAuth("username"), loginForm, response);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(value = "/login/email")
     public ResponseEntity<?> getAuthenticationByEmail(@RequestBody LoginEmailDTO loginForm, HttpServletResponse response){
-        authService.authenticate(authFactory.cerateAuth("email"), loginForm, response);     
+        authService.authenticate(authFactory.createAuth("email"), loginForm, response);     
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }

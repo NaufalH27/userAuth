@@ -1,12 +1,6 @@
 #enviorement config
 .env
-<<<<<<< HEAD
-<<<<<<< HEAD
-treefolder.txt
-=======
->>>>>>> origin/main
-=======
->>>>>>> origin/main
+
 
 # Compiled class file
 *.class

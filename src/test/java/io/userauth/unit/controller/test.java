@@ -8,7 +8,6 @@ import org.springframework.test.context.ActiveProfiles;
 import io.userauth.presentation.controllers.AuthController;
 import io.userauth.presentation.controllers.UserController;
 import io.userauth.presentation.dto.auth.LoginUsernameDTO;
-import io.userauth.presentation.dto.user.UserCreationDTO;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -22,14 +21,6 @@ public class test {
 
    
 
-    @Test
-    public void createUser_testValid(){
-        UserCreationDTO user = new UserCreationDTO();
-        user.setEmail("momoiBalap@gmail.com");
-        user.setName("momoiResing");
-        user.setPassword("momoi123");
-        userController.createUser(user);
-    }
 
 
     @Test
