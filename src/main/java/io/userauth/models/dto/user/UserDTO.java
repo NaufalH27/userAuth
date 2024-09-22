@@ -1,4 +1,4 @@
-package io.userauth.presentation.dto.user;
+package io.userauth.models.dto.user;
 
 public class UserDTO{
     private Long id;

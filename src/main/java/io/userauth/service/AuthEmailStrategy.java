@@ -1,9 +1,10 @@
 package io.userauth.service;
 
 
-import io.userauth.data.entities.UserEntity;
 import io.userauth.data.repositories.UserRepository;
-import io.userauth.presentation.dto.auth.LoginEmailDTO;
+import io.userauth.models.dto.auth.AuthResult;
+import io.userauth.models.dto.auth.LoginEmailDTO;
+import io.userauth.models.entities.User;
 import io.userauth.util.PasswordUtils;
 
 
@@ -19,7 +20,7 @@ public class AuthEmailStrategy implements AuthStrategy{
     public AuthResult getAuthentication(Object loginForm) {
         LoginEmailDTO form = (LoginEmailDTO) loginForm;
 
-        UserEntity entity = userRepository.findByEmail(form.getemail());
+        User entity = userRepository.findByEmail(form.getemail());
 
         if (entity == null){
             throw new IllegalArgumentException("email not found");

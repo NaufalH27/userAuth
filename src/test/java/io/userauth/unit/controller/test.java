@@ -19,9 +19,6 @@ public class test {
     @Autowired
     private AuthController authController;
 
-   
-
-
 
     @Test
     public void authenticateByName_testValid(){

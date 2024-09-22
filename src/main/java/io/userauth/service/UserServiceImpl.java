@@ -3,12 +3,12 @@ package io.userauth.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.userauth.data.entities.UserEntity;
 import io.userauth.data.repositories.UserRepository;
-import io.userauth.presentation.dto.user.UserCreationDTO;
-import io.userauth.presentation.dto.user.UserDTO;
+import io.userauth.models.dto.user.UserCreationDTO;
+import io.userauth.models.dto.user.UserDTO;
+import io.userauth.models.dto.user.UserDTOMapper;
+import io.userauth.models.entities.User;
 import io.userauth.util.PasswordUtils;
-import io.userauth.util.UserDTOMapper;
 
 
 @Service
@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserById(int id){
-        UserEntity entity = repository.findById(id);
+        User entity = repository.findById(id);
         if (entity == null){
             throw new IllegalArgumentException("user not found");
         }
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserByEmail(String email){
-        UserEntity entity = repository.findByEmail(email);
+        User entity = repository.findByEmail(email);
         if (entity == null){
             throw new IllegalArgumentException("user not found");
         }
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserByName(String name){
-        UserEntity entity = repository.findByName(name);
+        User entity = repository.findByName(name);
         if (entity == null){
             throw new IllegalArgumentException("user not found");
         }
@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("username already used");
         }
 
-        UserEntity entity = new UserEntity();
+        User entity = new User();
         entity.setName(creationForm.getName());
         entity.setEmail(creationForm.getEmail());
         String hashedPassword = PasswordUtils.hashPassword(creationForm.getPassword());
@@ -78,7 +78,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(int id){
         repository.deleteUser(id);
     }
-    
+  
     
 
 }

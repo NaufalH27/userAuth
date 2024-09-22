@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import io.userauth.presentation.dto.user.UserCreationDTO;
+import io.userauth.models.dto.user.UserCreationDTO;
 import io.userauth.service.UserService;
 import jakarta.validation.Valid;
 

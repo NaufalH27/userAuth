@@ -1,4 +1,4 @@
-package io.userauth.presentation.dto.auth;
+package io.userauth.models.dto.auth;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;

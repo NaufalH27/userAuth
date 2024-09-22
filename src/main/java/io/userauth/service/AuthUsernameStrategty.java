@@ -2,9 +2,10 @@ package io.userauth.service;
 
 import org.springframework.stereotype.Service;
 
-import io.userauth.data.entities.UserEntity;
 import io.userauth.data.repositories.UserRepository;
-import io.userauth.presentation.dto.auth.LoginUsernameDTO;
+import io.userauth.models.dto.auth.AuthResult;
+import io.userauth.models.dto.auth.LoginUsernameDTO;
+import io.userauth.models.entities.User;
 import io.userauth.util.PasswordUtils;
 
 @Service
@@ -18,7 +19,7 @@ public class AuthUsernameStrategty implements AuthStrategy {
     @Override
     public AuthResult getAuthentication(Object loginForm) {
         LoginUsernameDTO form = (LoginUsernameDTO) loginForm;
-        UserEntity entity = userRepository.findByName(form.getUsername());
+        User entity = userRepository.findByName(form.getUsername());
 
         if (entity == null){
             throw new IllegalArgumentException("user not found");

@@ -3,6 +3,7 @@ package io.userauth.service;
 
 import org.springframework.stereotype.Service;
 
+import io.userauth.models.dto.auth.AuthResult;
 import jakarta.servlet.http.HttpServletResponse;
 
 

@@ -1,4 +1,4 @@
-package io.userauth.service;
+package io.userauth.models.dto.auth;
 
 import java.util.Map;
 

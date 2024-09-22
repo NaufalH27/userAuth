@@ -1,4 +1,4 @@
-package io.userauth.data.entities;
+package io.userauth.models.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,7 +15,7 @@ import jakarta.persistence.UniqueConstraint;
             @UniqueConstraint(columnNames = {"email"}),
         }
 )
-public class UserEntity {
+public class User {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
