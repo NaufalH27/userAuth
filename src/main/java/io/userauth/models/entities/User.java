@@ -31,6 +31,9 @@ public class User {
     @Column(name = "password_hash", nullable=false)
     private String passwordHash;
 
+    @Column(name = "role", nullable=false)
+    private String role = "USER";
+
     public Long getId() {
         return this.id;
     }
@@ -63,5 +66,12 @@ public class User {
         this.passwordHash = passwordHash;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
 
 }

@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import io.userauth.models.dto.auth.AuthStrategyType;
 import io.userauth.models.dto.auth.LoginEmailDTO;
 import io.userauth.models.dto.auth.LoginUsernameDTO;
-import io.userauth.service.AuthFactory;
 import io.userauth.service.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -20,23 +20,21 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AuthController {
     
     private final AuthService authService;
-    private final AuthFactory authFactory;
     
     @Autowired
-    public AuthController(AuthService authService, AuthFactory authFactory){
+    public AuthController(AuthService authService){
         this.authService = authService;
-        this.authFactory = authFactory;
     }
 
     @PostMapping(value = "/login/username")
     public ResponseEntity<?> getAuthenticationByName(@RequestBody LoginUsernameDTO loginForm, HttpServletResponse response){
-        authService.authenticate(authFactory.createAuth("username"), loginForm, response);
+        authService.authenticate(AuthStrategyType.USERNAME, loginForm, response);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(value = "/login/email")
     public ResponseEntity<?> getAuthenticationByEmail(@RequestBody LoginEmailDTO loginForm, HttpServletResponse response){
-        authService.authenticate(authFactory.createAuth("email"), loginForm, response);     
+        authService.authenticate(AuthStrategyType.EMAIL, loginForm, response);     
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
