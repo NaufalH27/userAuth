@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.userauth.models.entities.User;
+import io.userauth.models.entities.UserEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -23,42 +23,42 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     @Transactional
-    public void createUser(User user){
+    public void createUser(UserEntity user){
         entityManager.persist(user);
     }
 
 
     @Override
     @Transactional(readOnly = true)
-    public User findById(int id){
-        return entityManager.find(User.class, id);
+    public UserEntity findById(int id){
+        return entityManager.find(UserEntity.class, id);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public User findByName(String name) {
-        final TypedQuery<User> query = entityManager.createQuery("SELECT u FROM UserEntity u WHERE u.name = :name", User.class);
+    public UserEntity findByName(String name) {
+        final TypedQuery<UserEntity> query = entityManager.createQuery("SELECT u FROM UserEntity u WHERE u.name = :name", UserEntity.class);
         return query.setParameter("name", name).getResultList().stream().findFirst().orElse(null);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public User findByEmail(String email){
-        final TypedQuery<User> query = entityManager.createQuery("SELECT u FROM UserEntity u WHERE u.email = :email", User.class);
+    public UserEntity findByEmail(String email){
+        final TypedQuery<UserEntity> query = entityManager.createQuery("SELECT u FROM UserEntity u WHERE u.email = :email", UserEntity.class);
         return query.setParameter("email", email).getResultList().stream().findFirst().orElse(null);
     }
 
     @Override
     @Transactional
-    public List<User> getAllUsers() {
-        final TypedQuery<User> query = entityManager.createQuery("SELECT u FROM UserEntity u", User.class);
+    public List<UserEntity> getAllUsers() {
+        final TypedQuery<UserEntity> query = entityManager.createQuery("SELECT u FROM UserEntity u", UserEntity.class);
         return query.getResultList();
     }
 
     @Override
     @Transactional
     public void updateEmail(int id, String newEmail) {
-        User user = entityManager.find(User.class, id);
+        UserEntity user = entityManager.find(UserEntity.class, id);
         if (user != null){
             user.setEmail(newEmail);
         }
@@ -67,7 +67,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     @Transactional
     public void deleteUser(int id) {
-        User user = entityManager.find(User.class, id);
+        UserEntity user = entityManager.find(UserEntity.class, id);
         entityManager.remove(user);
     }
       

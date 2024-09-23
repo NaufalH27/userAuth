@@ -15,7 +15,7 @@ import jakarta.persistence.UniqueConstraint;
             @UniqueConstraint(columnNames = {"email"}),
         }
 )
-public class User {
+public class UserEntity {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,8 +31,8 @@ public class User {
     @Column(name = "password_hash", nullable=false)
     private String passwordHash;
 
-    @Column(name = "role", nullable=false)
-    private String role = "USER";
+    @Column(name = "role")
+    private String role;
 
     public Long getId() {
         return this.id;

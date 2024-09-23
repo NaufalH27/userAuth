@@ -2,13 +2,13 @@ package io.userauth.models.dto.user;
 
 import org.springframework.stereotype.Component;
 
-import io.userauth.models.entities.User;
+import io.userauth.models.entities.UserEntity;
 
 
 @Component
 public class UserDTOMapper {
 
-    public static UserDTO toDTO(User entity){
+    public static UserDTO toDTO(UserEntity entity){
 
         if (entity == null){
             return null;

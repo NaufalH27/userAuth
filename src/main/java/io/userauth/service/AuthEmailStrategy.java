@@ -6,7 +6,7 @@ import io.userauth.data.repositories.UserRepository;
 import io.userauth.models.dto.auth.AuthenticatedUserDTO;
 import io.userauth.models.dto.auth.AuthenticatedUserDTOMapper;
 import io.userauth.models.dto.auth.LoginEmailDTO;
-import io.userauth.models.entities.User;
+import io.userauth.models.entities.UserEntity;
 import io.userauth.util.PasswordUtils;
 
 
@@ -21,7 +21,7 @@ public class AuthEmailStrategy implements AuthStrategy{
     @Override
     public AuthenticatedUserDTO getAuthentication(Object loginForm) {
         LoginEmailDTO form = (LoginEmailDTO) loginForm;
-        User entity = userRepository.findByEmail(form.getemail());
+        UserEntity entity = userRepository.findByEmail(form.getemail());
 
         if (entity == null){
             throw new IllegalArgumentException("user not found");

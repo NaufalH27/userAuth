@@ -7,7 +7,7 @@ import io.userauth.data.repositories.UserRepository;
 import io.userauth.models.dto.user.UserCreationDTO;
 import io.userauth.models.dto.user.UserDTO;
 import io.userauth.models.dto.user.UserDTOMapper;
-import io.userauth.models.entities.User;
+import io.userauth.models.entities.UserEntity;
 import io.userauth.util.PasswordUtils;
 
 
@@ -23,29 +23,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserById(int id){
-        User entity = repository.findById(id);
-        if (entity == null){
+        UserEntity user = repository.findById(id);
+        if (user == null){
             throw new IllegalArgumentException("user not found");
         }
-        return UserDTOMapper.toDTO(entity);
+        return UserDTOMapper.toDTO(user);
     }
 
     @Override
     public UserDTO getUserByEmail(String email){
-        User entity = repository.findByEmail(email);
-        if (entity == null){
+        UserEntity user = repository.findByEmail(email);
+        if (user == null){
             throw new IllegalArgumentException("user not found");
         }
-        return UserDTOMapper.toDTO(entity);
+        return UserDTOMapper.toDTO(user);
     }
 
     @Override
     public UserDTO getUserByName(String name){
-        User entity = repository.findByName(name);
-        if (entity == null){
+        UserEntity user = repository.findByName(name);
+        if (user == null){
             throw new IllegalArgumentException("user not found");
         }
-        return UserDTOMapper.toDTO(entity);
+        return UserDTOMapper.toDTO(user);
     }
     
 
@@ -60,12 +60,12 @@ public class UserServiceImpl implements UserService {
             throw new IllegalArgumentException("username already used");
         }
 
-        User entity = new User();
-        entity.setName(creationForm.getName());
-        entity.setEmail(creationForm.getEmail());
+        UserEntity user = new UserEntity();
+        user.setName(creationForm.getName());
+        user.setEmail(creationForm.getEmail());
         String hashedPassword = PasswordUtils.hashPassword(creationForm.getPassword());
-        entity.setPasswordHash(hashedPassword);
-        repository.createUser(entity);
+        user.setPasswordHash(hashedPassword);
+        repository.createUser(user);
     }
 
     @Override

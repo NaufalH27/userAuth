@@ -1,10 +1,10 @@
 package io.userauth.models.dto.auth;
 
-import io.userauth.models.entities.User;
+import io.userauth.models.entities.UserEntity;
 
 public class AuthenticatedUserDTOMapper {
 
-    public static AuthenticatedUserDTO toDTO(User entity){
+    public static AuthenticatedUserDTO toDTO(UserEntity entity){
         if (entity == null){
             return null;
         }
