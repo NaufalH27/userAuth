@@ -4,6 +4,7 @@ package io.userauth.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.userauth.data.repositories.UserRepository;
@@ -12,6 +13,7 @@ import io.userauth.models.dto.auth.AuthenticatedUserDTO;
 import io.userauth.models.dto.auth.CreateEntityMapper;
 import io.userauth.models.dto.auth.UserCreationDTO;
 import io.userauth.models.dto.auth.emailVerifyDTO;
+import io.userauth.util.CookieUtils;
 import jakarta.servlet.http.HttpServletResponse;
 
 
@@ -19,13 +21,11 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AuthServiceImpl implements AuthService {
 
     private final JWTService jwtService;
-    private final CookieService cookieService;
     private final UserRepository userRepository;
 
-        
-    public AuthServiceImpl(JWTService jwtService, CookieService cookieService, UserRepository userRepository){
+    @Autowired
+    public AuthServiceImpl(JWTService jwtService, UserRepository userRepository){
         this.jwtService = jwtService;
-        this.cookieService = cookieService;
         this.userRepository = userRepository;
     }
 
@@ -43,7 +43,7 @@ public class AuthServiceImpl implements AuthService {
     public void authenticate(AuthStrategyType type, Object loginForm, HttpServletResponse response){
         AuthenticatedUserDTO authenticatedUser = createAuthStrategy(type).getAuthentication(loginForm);
         String JWTToken = generateToken(authenticatedUser);
-        cookieService.sendToken(response, JWTToken);
+        CookieUtils.sendCookies(response, "token", JWTToken);
     }
     
     private AuthStrategy createAuthStrategy(AuthStrategyType type){
