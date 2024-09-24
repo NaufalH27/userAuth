@@ -11,12 +11,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import io.userauth.models.dto.auth.AuthStrategyType;
 import io.userauth.models.dto.auth.LoginEmailDTO;
 import io.userauth.models.dto.auth.LoginUsernameDTO;
+import io.userauth.models.dto.auth.UserCreationDTO;
 import io.userauth.service.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 
 
 @Controller
-@RequestMapping(value = "/api/auth")
+@RequestMapping(value = "/auth")
 public class AuthController {
     
     private final AuthService authService;
@@ -24,6 +26,12 @@ public class AuthController {
     @Autowired
     public AuthController(AuthService authService){
         this.authService = authService;
+    }
+
+    @PostMapping(value = "/signup")
+    public ResponseEntity<Void> registerUser(@Valid @RequestBody UserCreationDTO creationForm) {
+        authService.createUser(creationForm);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @PostMapping(value = "/login/username")
@@ -37,4 +45,5 @@ public class AuthController {
         authService.authenticate(AuthStrategyType.EMAIL, loginForm, response);     
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
 }

@@ -4,11 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.userauth.data.repositories.UserRepository;
-import io.userauth.models.dto.user.UserCreationDTO;
 import io.userauth.models.dto.user.UserDTO;
 import io.userauth.models.dto.user.UserDTOMapper;
 import io.userauth.models.entities.UserEntity;
-import io.userauth.util.PasswordUtils;
 
 
 @Service
@@ -48,25 +46,6 @@ public class UserServiceImpl implements UserService {
         return UserDTOMapper.toDTO(user);
     }
     
-
-    @Override
-    public void createUser(UserCreationDTO creationForm){
-
-        if(repository.findByEmail(creationForm.getEmail()) != null ){
-            throw new IllegalArgumentException("email already used");
-        }
-
-        if(repository.findByName(creationForm.getName()) != null){
-            throw new IllegalArgumentException("username already used");
-        }
-
-        UserEntity user = new UserEntity();
-        user.setName(creationForm.getName());
-        user.setEmail(creationForm.getEmail());
-        String hashedPassword = PasswordUtils.hashPassword(creationForm.getPassword());
-        user.setPasswordHash(hashedPassword);
-        repository.createUser(user);
-    }
 
     @Override
     public void updateEmail(int id, String newEmail){

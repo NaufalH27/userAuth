@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 public class LoginUsernameDTO {
 
     @NotBlank(message = "username cannot be blank")
-    @Size(max = 255, message = "username too long")
+    @Size(max = 20, message = "username too long")
     @Pattern(regexp = "^[a-zA-Z0-9._-]+$")
     String username;
 
@@ -15,7 +15,7 @@ public class LoginUsernameDTO {
     @Size(max = 255, message = "password too long")
     private String password;
 
-    
+
     public String getUsername() {
         return this.username;
     }

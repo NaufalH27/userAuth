@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import io.userauth.data.repositories.UserRepository;
 import io.userauth.models.dto.auth.AuthStrategyType;
 import io.userauth.models.dto.auth.AuthenticatedUserDTO;
+import io.userauth.models.dto.auth.CreateEntityMapper;
+import io.userauth.models.dto.auth.UserCreationDTO;
 import jakarta.servlet.http.HttpServletResponse;
 
 
@@ -18,11 +20,20 @@ public class AuthServiceImpl implements AuthService {
     private final JWTService jwtService;
     private final CookieService cookieService;
     private final UserRepository userRepository;
+
         
     public AuthServiceImpl(JWTService jwtService, CookieService cookieService, UserRepository userRepository){
         this.jwtService = jwtService;
         this.cookieService = cookieService;
         this.userRepository = userRepository;
+    }
+
+    @Override
+    public void createUser(UserCreationDTO creationForm){
+        if(userRepository.findByName(creationForm.getName()) != null){
+            throw new IllegalArgumentException("username already used");
+        }
+        userRepository.createUser(CreateEntityMapper.toEntity(creationForm));
     }
 
     @Override
@@ -45,7 +56,7 @@ public class AuthServiceImpl implements AuthService {
         claims.put("username", user.getName());
         claims.put("email", user.getEmail());
         claims.put("role", user.getRole());
-        return jwtService.generateToken(claims, user.getId().toString()); //id as subject
+        return jwtService.generateToken(claims, user.getId().toString()); 
     }
 }
 
