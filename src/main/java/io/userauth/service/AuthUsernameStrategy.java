@@ -3,9 +3,9 @@ package io.userauth.service;
 import org.springframework.stereotype.Service;
 
 import io.userauth.data.repositories.UserRepository;
-import io.userauth.models.dto.auth.AuthenticatedUserDTO;
-import io.userauth.models.dto.auth.AuthenticatedUserDTOMapper;
-import io.userauth.models.dto.auth.LoginUsernameDTO;
+import io.userauth.dto.auth.AuthenticatedUserDTO;
+import io.userauth.dto.auth.AuthenticatedUserDTOMapper;
+import io.userauth.dto.auth.LoginUsernameDTO;
 import io.userauth.models.entities.UserEntity;
 import io.userauth.util.PasswordUtils;
 

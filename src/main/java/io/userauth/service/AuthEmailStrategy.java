@@ -3,9 +3,9 @@ package io.userauth.service;
 
 
 import io.userauth.data.repositories.UserRepository;
-import io.userauth.models.dto.auth.AuthenticatedUserDTO;
-import io.userauth.models.dto.auth.AuthenticatedUserDTOMapper;
-import io.userauth.models.dto.auth.LoginEmailDTO;
+import io.userauth.dto.auth.AuthenticatedUserDTO;
+import io.userauth.dto.auth.AuthenticatedUserDTOMapper;
+import io.userauth.dto.auth.LoginEmailDTO;
 import io.userauth.models.entities.UserEntity;
 import io.userauth.util.PasswordUtils;
 

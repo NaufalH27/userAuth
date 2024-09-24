@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.userauth.data.repositories.UserRepository;
-import io.userauth.models.dto.user.UserDTO;
-import io.userauth.models.dto.user.UserDTOMapper;
+import io.userauth.dto.user.UserDTO;
+import io.userauth.dto.user.UserDTOMapper;
 import io.userauth.models.entities.UserEntity;
 
 

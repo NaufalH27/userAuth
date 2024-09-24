@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import io.userauth.models.dto.auth.AuthStrategyType;
-import io.userauth.models.dto.auth.LoginEmailDTO;
-import io.userauth.models.dto.auth.LoginUsernameDTO;
-import io.userauth.models.dto.auth.UserCreationDTO;
-import io.userauth.models.dto.auth.emailVerifyDTO;
+import io.userauth.dto.auth.AuthStrategyType;
+import io.userauth.dto.auth.LoginEmailDTO;
+import io.userauth.dto.auth.LoginUsernameDTO;
+import io.userauth.dto.auth.UserCreationDTO;
+import io.userauth.dto.auth.emailVerifyDTO;
 import io.userauth.service.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

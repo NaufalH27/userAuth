@@ -1,6 +1,6 @@
 package io.userauth.service;
 
-import io.userauth.models.dto.user.UserDTO;
+import io.userauth.dto.user.UserDTO;
 
 public interface UserService {
     public UserDTO getUserById(int id);

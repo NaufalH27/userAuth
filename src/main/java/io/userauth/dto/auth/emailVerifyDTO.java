@@ -1,4 +1,4 @@
-package io.userauth.models.dto.auth;
+package io.userauth.dto.auth;
 
 import java.util.UUID;
 

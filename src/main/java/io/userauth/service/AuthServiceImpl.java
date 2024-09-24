@@ -8,11 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.userauth.data.repositories.UserRepository;
-import io.userauth.models.dto.auth.AuthStrategyType;
-import io.userauth.models.dto.auth.AuthenticatedUserDTO;
-import io.userauth.models.dto.auth.CreateEntityMapper;
-import io.userauth.models.dto.auth.UserCreationDTO;
-import io.userauth.models.dto.auth.emailVerifyDTO;
+import io.userauth.dto.auth.AuthStrategyType;
+import io.userauth.dto.auth.AuthenticatedUserDTO;
+import io.userauth.dto.auth.CreateEntityMapper;
+import io.userauth.dto.auth.UserCreationDTO;
+import io.userauth.dto.auth.emailVerifyDTO;
 import io.userauth.util.CookieUtils;
 import jakarta.servlet.http.HttpServletResponse;
 
