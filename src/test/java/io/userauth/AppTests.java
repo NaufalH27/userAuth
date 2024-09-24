@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import io.userauth.data.repositories.UserRepository;
-import io.userauth.models.dto.auth.UserCreationDTO;
 import io.userauth.models.entities.UserEntity;
 import io.userauth.service.UserService;
 
@@ -27,15 +26,12 @@ class AppTests {
 		userRepository.createUser(user);
 	}
 
-	@Test
-	void aaaaaaaaaaaaa() {
-		UserCreationDTO user = new UserCreationDTO();
-			user.setName("momoiBalap");
-			user.setEmail("momoiResing123@gmail.com");
-			user.setPassword( "momoi123");
-			user.setRepeatPassword("momoi23");
-			userService.createUser(user);
-		}
+	// @Test
+	// void aaaaaaaaaaaaa() {
+	// 	UserCreationDTO user = new UserCreationDTO();
+	// 		user.setName("momoiBalap");
+	// 		user.setPassword( "momoi123");
+	// 	}
 		
 
 }

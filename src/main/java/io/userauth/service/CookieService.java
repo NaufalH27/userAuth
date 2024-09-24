@@ -13,6 +13,7 @@ public class CookieService {
         Cookie cookie = new Cookie("token", token);
         cookie.setHttpOnly(true);
         cookie.setMaxAge(60 * 60 * 24);
+        cookie.setPath("/");
         serverResponse.addCookie(cookie);
     }
 

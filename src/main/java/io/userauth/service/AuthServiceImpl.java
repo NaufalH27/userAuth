@@ -11,6 +11,7 @@ import io.userauth.models.dto.auth.AuthStrategyType;
 import io.userauth.models.dto.auth.AuthenticatedUserDTO;
 import io.userauth.models.dto.auth.CreateEntityMapper;
 import io.userauth.models.dto.auth.UserCreationDTO;
+import io.userauth.models.dto.auth.emailVerifyDTO;
 import jakarta.servlet.http.HttpServletResponse;
 
 
@@ -28,9 +29,11 @@ public class AuthServiceImpl implements AuthService {
         this.userRepository = userRepository;
     }
 
+    
+
     @Override
     public void createUser(UserCreationDTO creationForm){
-        if(userRepository.findByName(creationForm.getName()) != null){
+        if(userRepository.findByName(creationForm.getUsername()) != null){
             throw new IllegalArgumentException("username already used");
         }
         userRepository.createUser(CreateEntityMapper.toEntity(creationForm));
@@ -57,6 +60,11 @@ public class AuthServiceImpl implements AuthService {
         claims.put("email", user.getEmail());
         claims.put("role", user.getRole());
         return jwtService.generateToken(claims, user.getId().toString()); 
+    }
+
+    @Override
+    public void verifyEmail(emailVerifyDTO verification) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }
 

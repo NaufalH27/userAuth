@@ -11,7 +11,7 @@ public class CreateEntityMapper {
         }
         
         UserEntity user = new UserEntity();
-        user.setName(creationForm.getName());
+        user.setName(creationForm.getUsername());
         String hashedPassword = PasswordUtils.hashPassword(creationForm.getPassword());
         user.setPasswordHash(hashedPassword);
 

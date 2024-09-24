@@ -1,4 +1,4 @@
-package io.userauth.presentation.middleware.config;
+package io.userauth.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -6,6 +6,9 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+
+import io.userauth.presentation.middleware.JwtTokenFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -18,9 +21,9 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS).permitAll()
                 .requestMatchers("/auth/**").permitAll() 
+                .requestMatchers("/users/**").permitAll() 
                 .anyRequest().authenticated() 
-            ).httpBasic();
-            // .addFilterBefore(new JwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+            ).addFilterBefore(new JwtTokenFilter(), BasicAuthenticationFilter.class);
             return http.build();
     }
 

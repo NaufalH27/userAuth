@@ -12,6 +12,7 @@ import io.userauth.models.dto.auth.AuthStrategyType;
 import io.userauth.models.dto.auth.LoginEmailDTO;
 import io.userauth.models.dto.auth.LoginUsernameDTO;
 import io.userauth.models.dto.auth.UserCreationDTO;
+import io.userauth.models.dto.auth.emailVerifyDTO;
 import io.userauth.service.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -32,6 +33,12 @@ public class AuthController {
     public ResponseEntity<Void> registerUser(@Valid @RequestBody UserCreationDTO creationForm) {
         authService.createUser(creationForm);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping(value = "/verify")
+    public ResponseEntity<?> emailVerification(@RequestBody emailVerifyDTO emailVerification){
+        authService.verifyEmail(emailVerification);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(value = "/login/username")
