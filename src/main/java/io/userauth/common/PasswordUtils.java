@@ -1,4 +1,4 @@
-package io.userauth.util;
+package io.userauth.common;
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 

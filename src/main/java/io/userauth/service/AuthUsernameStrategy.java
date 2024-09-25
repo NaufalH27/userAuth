@@ -2,12 +2,12 @@ package io.userauth.service;
 
 import org.springframework.stereotype.Service;
 
+import io.userauth.common.PasswordUtils;
 import io.userauth.data.repositories.UserRepository;
 import io.userauth.dto.auth.AuthenticatedUserDTO;
 import io.userauth.dto.auth.LoginUsernameDTO;
 import io.userauth.mapper.AuthenticatedUserDTOMapper;
 import io.userauth.models.UserEntity;
-import io.userauth.util.PasswordUtils;
 
 @Service
 public class AuthUsernameStrategy implements AuthStrategy {

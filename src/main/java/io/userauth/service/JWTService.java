@@ -19,12 +19,16 @@ public class JWTService{
     @Value("${jwt.secret}")
     private String secretKey;
 
+    @Value("${jwt.expiration}")
+    private long expirationTime;
+
     public String generateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setIssuer("userauth")
                 .setSubject(subject)
                 .setClaims(claims)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + this.expirationTime))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

@@ -7,13 +7,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import io.userauth.common.CookieUtils;
 import io.userauth.data.repositories.UserRepository;
 import io.userauth.dto.auth.AuthStrategyType;
 import io.userauth.dto.auth.AuthenticatedUserDTO;
 import io.userauth.dto.auth.CreateEntityMapper;
 import io.userauth.dto.auth.UserCreationDTO;
 import io.userauth.dto.auth.emailVerifyDTO;
-import io.userauth.util.CookieUtils;
 import jakarta.servlet.http.HttpServletResponse;
 
 

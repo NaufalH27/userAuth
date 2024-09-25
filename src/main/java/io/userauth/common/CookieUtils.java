@@ -1,13 +1,10 @@
-package io.userauth.util;
-
-import org.springframework.stereotype.Service;
+package io.userauth.common;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 
-@Service
 public class CookieUtils {
     
     public static void sendCookies(HttpServletResponse response, String cookieName, String item) {
