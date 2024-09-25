@@ -5,8 +5,8 @@ import org.springframework.stereotype.Service;
 
 import io.userauth.data.repositories.UserRepository;
 import io.userauth.dto.user.UserDTO;
-import io.userauth.dto.user.UserDTOMapper;
-import io.userauth.models.entities.UserEntity;
+import io.userauth.mapper.UserDTOMapper;
+import io.userauth.models.UserEntity;
 
 
 @Service

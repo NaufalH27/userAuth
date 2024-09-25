@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import io.userauth.data.repositories.UserRepository;
-import io.userauth.models.entities.UserEntity;
+import io.userauth.models.UserEntity;
 import io.userauth.service.UserService;
 
 @SpringBootTest

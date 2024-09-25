@@ -2,7 +2,7 @@ package io.userauth.data.repositories;
 
 import java.util.List;
 
-import io.userauth.models.entities.UserEntity;
+import io.userauth.models.UserEntity;
 
 public interface UserRepository {
     public UserEntity findById(int id);

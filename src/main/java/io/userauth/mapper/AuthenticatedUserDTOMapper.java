@@ -1,6 +1,7 @@
-package io.userauth.dto.auth;
+package io.userauth.mapper;
 
-import io.userauth.models.entities.UserEntity;
+import io.userauth.dto.auth.AuthenticatedUserDTO;
+import io.userauth.models.UserEntity;
 
 public class AuthenticatedUserDTOMapper {
 

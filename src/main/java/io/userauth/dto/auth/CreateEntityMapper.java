@@ -1,6 +1,6 @@
 package io.userauth.dto.auth;
 
-import io.userauth.models.entities.UserEntity;
+import io.userauth.models.UserEntity;
 import io.userauth.util.PasswordUtils;
 
 public class CreateEntityMapper {

@@ -1,8 +1,9 @@
-package io.userauth.dto.user;
+package io.userauth.mapper;
 
 import org.springframework.stereotype.Component;
 
-import io.userauth.models.entities.UserEntity;
+import io.userauth.dto.user.UserDTO;
+import io.userauth.models.UserEntity;
 
 
 @Component
