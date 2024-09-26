@@ -1,5 +1,6 @@
 package io.userauth.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -8,11 +9,19 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
+import io.userauth.common.JWTHelper;
 import io.userauth.presentation.middleware.JwtTokenFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    private final JWTHelper jwtHelper;
+
+    @Autowired
+    public SecurityConfig(JWTHelper jwtHelper){
+        this.jwtHelper = jwtHelper;
+    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -23,7 +32,7 @@ public class SecurityConfig {
                 .requestMatchers("/auth/**").permitAll() 
                 .requestMatchers("/users/**").permitAll() 
                 .anyRequest().authenticated() 
-            ).addFilterBefore(new JwtTokenFilter(), BasicAuthenticationFilter.class);
+            ).addFilterBefore(new JwtTokenFilter(this.jwtHelper), BasicAuthenticationFilter.class);
             return http.build();
     }
 
