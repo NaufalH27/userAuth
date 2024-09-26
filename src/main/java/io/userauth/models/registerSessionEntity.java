@@ -9,8 +9,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import lombok.Getter;
+import lombok.Setter;
 
-
+// @Getter
+// @Setter
 // @Entity
 // @Table(name = "registrationSession", 
 //         uniqueConstraints = {
@@ -28,22 +31,5 @@ import jakarta.persistence.UniqueConstraint;
 //     @Column(name = "email")
 //     private String email;
     
-
-//     public UUID getSessionToken() {
-//         return this.sessionToken;
-//     }
-
-//     public void setSessionToken(UUID sessionToken) {
-//         this.sessionToken = sessionToken;
-//     }
-
-//     public String getEmail() {
-//         return this.email;
-//     }
-
-//     public void setEmail(String email) {
-//         this.email = email;
-//     }
-
 
 // }

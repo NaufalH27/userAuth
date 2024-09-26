@@ -9,12 +9,7 @@ import io.userauth.models.UserEntity;
 @Component
 public class UserDTOMapper {
 
-    public static UserDTO toDTO(UserEntity entity){
-
-        if (entity == null){
-            return null;
-        }
-        
+    public static UserDTO toDTO(UserEntity entity){        
         UserDTO dto = new UserDTO();
         dto.setId(entity.getId());
         dto.setName(entity.getName());

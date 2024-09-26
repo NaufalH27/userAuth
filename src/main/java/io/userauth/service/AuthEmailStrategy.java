@@ -21,7 +21,7 @@ public class AuthEmailStrategy implements AuthStrategy{
     @Override
     public AuthenticatedUserDTO getAuthentication(Object loginForm) {
         LoginEmailDTO form = (LoginEmailDTO) loginForm;
-        UserEntity entity = userRepository.findByEmail(form.getemail());
+        UserEntity entity = userRepository.findByEmail(form.getEmail());
 
         if (entity == null){
             throw new IllegalArgumentException("user not found");

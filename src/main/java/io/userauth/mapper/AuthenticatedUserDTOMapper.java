@@ -1,20 +1,22 @@
 package io.userauth.mapper;
 
+import java.util.stream.Collectors;
+
 import io.userauth.dto.auth.AuthenticatedUserDTO;
+import io.userauth.models.Role;
 import io.userauth.models.UserEntity;
 
 public class AuthenticatedUserDTOMapper {
 
-    public static AuthenticatedUserDTO toDTO(UserEntity entity){
-        if (entity == null){
-            return null;
-        }
-        
+    public static AuthenticatedUserDTO toDTO(UserEntity user){        
         AuthenticatedUserDTO dto = new AuthenticatedUserDTO();
-        dto.setId(entity.getId());
-        dto.setName(entity.getName());
-        dto.setEmail(entity.getEmail());
-        dto.setRole(entity.getRole());
+        dto.setId(user.getId());
+        dto.setName(user.getName());
+        dto.setEmail(user.getEmail());
+        dto.setRole(user.getRoles()
+                        .stream()
+                        .map(Role::getName)
+                        .collect(Collectors.toSet()));
 
         return dto;
 

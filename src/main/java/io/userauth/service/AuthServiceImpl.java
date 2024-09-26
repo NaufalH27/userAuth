@@ -11,9 +11,9 @@ import io.userauth.common.CookieUtils;
 import io.userauth.data.repositories.UserRepository;
 import io.userauth.dto.auth.AuthStrategyType;
 import io.userauth.dto.auth.AuthenticatedUserDTO;
-import io.userauth.dto.auth.CreateEntityMapper;
 import io.userauth.dto.auth.UserCreationDTO;
 import io.userauth.dto.auth.emailVerifyDTO;
+import io.userauth.mapper.CreateEntityMapper;
 import jakarta.servlet.http.HttpServletResponse;
 
 
