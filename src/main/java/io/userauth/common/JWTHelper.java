@@ -1,6 +1,8 @@
 package io.userauth.common;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.UUID;
 
 import javax.crypto.SecretKey;
 
@@ -26,14 +28,14 @@ public class JWTHelper {
         return claims.getSubject();        
     }
 
-    public String getRole(String token){
+    public List<String> getRole(String token){
         final Claims claims = this.extractAllClaims(token);
-        return (String) claims.get("role");        
+        return claims.get("role");        
     }
 
-    public String getUsername(String token){
+    public UUID getId(String token){
         final Claims claims = this.extractAllClaims(token);
-        return (String) claims.get("username");
+        return UUID.fromString((String) claims.get("id"));
     }
 
 

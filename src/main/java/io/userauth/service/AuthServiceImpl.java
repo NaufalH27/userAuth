@@ -56,10 +56,10 @@ public class AuthServiceImpl implements AuthService {
 
     private String generateToken(AuthenticatedUserDTO user) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("username", user.getName());
+        claims.put("id", user.getId().toString());
         claims.put("email", user.getEmail());
         claims.put("role", user.getRole());
-        return jwtService.generateToken(claims, user.getId().toString()); 
+        return jwtService.generateToken(claims, user.getUsername()); 
     }
 
     @Override

@@ -1,6 +1,7 @@
 package io.userauth.dto.auth;
 
 import java.util.Collection;
+import java.util.UUID;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,10 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class CustomUserDetails implements UserDetails {
 
     private final String username;
-    private final Long userId;  
+    private final UUID userId;  
     private final Collection<? extends GrantedAuthority> authorities;
 
-    public CustomUserDetails(String username, Long userId, Collection<? extends GrantedAuthority> authorities) {
+    public CustomUserDetails(String username, UUID userId, Collection<? extends GrantedAuthority> authorities) {
         this.username = username;
         this.userId = userId;
         this.authorities = authorities;
@@ -32,7 +33,7 @@ public class CustomUserDetails implements UserDetails {
         return null;
     }
 
-    public Long getUserId() {
+    public UUID getUserId() {
         return this.userId;
     }
     

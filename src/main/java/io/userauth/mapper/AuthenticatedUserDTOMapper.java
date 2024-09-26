@@ -11,7 +11,7 @@ public class AuthenticatedUserDTOMapper {
     public static AuthenticatedUserDTO toDTO(UserEntity user){        
         AuthenticatedUserDTO dto = new AuthenticatedUserDTO();
         dto.setId(user.getId());
-        dto.setName(user.getName());
+        dto.setUsername(user.getUsername());
         dto.setEmail(user.getEmail());
         dto.setRole(user.getRoles()
                         .stream()

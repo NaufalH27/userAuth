@@ -1,6 +1,7 @@
 package io.userauth.models;
 
 import java.util.Set;
+import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -21,19 +22,19 @@ import lombok.Setter;
 @Entity
 @Table(name = "users", 
         uniqueConstraints = {
-            @UniqueConstraint(columnNames = {"name"}),
+            @UniqueConstraint(columnNames = {"username"}),
             @UniqueConstraint(columnNames = {"email"}),
         }
 )
 public class UserEntity {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "id")
-    private Long id;
+    private UUID id;
     
-    @Column(name = "name", nullable=false)
-    private String name;
+    @Column(name = "username", nullable=false)
+    private String username;
 
     @Column(name = "email")
     private String email;

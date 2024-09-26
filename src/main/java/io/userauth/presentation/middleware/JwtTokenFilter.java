@@ -2,6 +2,7 @@ package io.userauth.presentation.middleware;
 
 import java.io.IOException;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -9,6 +10,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.userauth.common.CookieUtils;
 import io.userauth.common.JWTHelper;
+import io.userauth.dto.auth.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -45,18 +47,15 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
 
         try {
-      
-
-
-
+            UserDetails user = new CustomUserDetails(
+                                    jwtHelper.getSubject(jwtToken),   
+                                    jwtHelper.getId(jwtToken), 
+                                    jwtHelper.getRole(jwtToken));
         } catch (ExpiredJwtException e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "JWT Token is expired");
         } catch (JwtException e) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT Token");
         }
-
-        
-
 
         filterChain.doFilter(request, response);
     }

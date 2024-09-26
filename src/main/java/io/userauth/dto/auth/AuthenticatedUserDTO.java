@@ -1,6 +1,7 @@
 package io.userauth.dto.auth;
 
 import java.util.Set;
+import java.util.UUID;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,8 +9,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class AuthenticatedUserDTO {
-    private Long id;
-    private String name;
+    private UUID id;
+    private String username;
     private String email;
     private Set<String> role;
 

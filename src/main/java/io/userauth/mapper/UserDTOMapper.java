@@ -9,11 +9,10 @@ import io.userauth.models.UserEntity;
 @Component
 public class UserDTOMapper {
 
-    public static UserDTO toDTO(UserEntity entity){        
+    public static UserDTO toDTO(UserEntity user){        
         UserDTO dto = new UserDTO();
-        dto.setId(entity.getId());
-        dto.setName(entity.getName());
-        dto.setEmail(entity.getEmail());
+        dto.setUsername(user.getUsername());
+        dto.setEmail(user.getEmail());
 
         return dto;
 
