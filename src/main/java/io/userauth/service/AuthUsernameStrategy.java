@@ -4,10 +4,10 @@ import org.springframework.stereotype.Service;
 
 import io.userauth.common.PasswordUtils;
 import io.userauth.data.repositories.UserRepository;
-import io.userauth.dto.auth.AuthenticatedUserDTO;
-import io.userauth.dto.auth.LoginUsernameDTO;
-import io.userauth.mapper.AuthenticatedUserDTOMapper;
-import io.userauth.models.UserEntity;
+import io.userauth.dto.auth.AuthenticatedUser;
+import io.userauth.dto.auth.UsernameLoginForm;
+import io.userauth.mapper.AuthenticatedUserMapper;
+import io.userauth.models.Users;
 
 @Service
 public class AuthUsernameStrategy implements AuthStrategy {
@@ -19,9 +19,9 @@ public class AuthUsernameStrategy implements AuthStrategy {
     }
 
     @Override
-    public AuthenticatedUserDTO getAuthentication(Object loginForm) {
-        LoginUsernameDTO form = (LoginUsernameDTO) loginForm;
-        UserEntity entity = userRepository.findByName(form.getUsername());
+    public AuthenticatedUser getAuthentication(Object loginForm) {
+        UsernameLoginForm form = (UsernameLoginForm) loginForm;
+        Users entity = userRepository.findByName(form.getUsername());
 
         if (entity == null){
             throw new IllegalArgumentException("user not found");
@@ -30,7 +30,7 @@ public class AuthUsernameStrategy implements AuthStrategy {
             throw new IllegalArgumentException("email password");
         }
 
-        return AuthenticatedUserDTOMapper.toDTO(entity);
+        return AuthenticatedUserMapper.toDTO(entity);
     }
 
 }

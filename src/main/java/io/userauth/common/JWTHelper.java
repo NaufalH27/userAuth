@@ -1,26 +1,48 @@
 package io.userauth.common;
 
-import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.util.Date;
 import java.util.UUID;
+import java.util.Map;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+@Service
 public class JWTHelper {
 
     @Value("${jwt.secret}")
     String secretKey;
 
-    private Claims extractAllClaims(String token) {
-        SecretKey Key = Keys.hmacShaKeyFor(this.secretKey.getBytes(StandardCharsets.UTF_8));
+    @Value("${jwt.expiration}")
+    private long expirationTime;
+
+    private SecretKey getSignInKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(this.secretKey); 
+        return Keys.hmacShaKeyFor(keyBytes);                
+    }
+
+    public String generateToken(Map<String, Object> claims, String subject) {
+        return Jwts.builder()
+                .setIssuer("userauth")
+                .setSubject(subject)
+                .setClaims(claims)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + this.expirationTime))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
+    
+    public Claims extractAllClaims(String token) {
+        SecretKey Key = getSignInKey();
         return Jwts.parserBuilder().setSigningKey(Key).build().parseClaimsJws(token).getBody();
-     
     }
 
     public String getSubject(String token){
@@ -28,15 +50,23 @@ public class JWTHelper {
         return claims.getSubject();        
     }
 
-    public List<String> getRole(String token){
-        final Claims claims = this.extractAllClaims(token);
-        return claims.get("role");        
-    }
+    // public List<String> getRole(String token){
+    //     final Claims claims = this.extractAllClaims(token);
+    //     Object roleList =  claims.get("role");
+    //     if (roleList.getClass().isArray()){
+    //         return roleList;   
+    //     } else {
+
+    //     }
+         
+    // }
 
     public UUID getId(String token){
         final Claims claims = this.extractAllClaims(token);
         return UUID.fromString((String) claims.get("id"));
     }
+
+
 
 
 }

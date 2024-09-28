@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserCreationDTO{
+public class UserCreationForm{
     
     @NotBlank(message = "email cannot be blank")
     @Email(message = "Invalid email format")

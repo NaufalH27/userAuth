@@ -4,10 +4,10 @@ package io.userauth.service;
 
 import io.userauth.common.PasswordUtils;
 import io.userauth.data.repositories.UserRepository;
-import io.userauth.dto.auth.AuthenticatedUserDTO;
-import io.userauth.dto.auth.LoginEmailDTO;
-import io.userauth.mapper.AuthenticatedUserDTOMapper;
-import io.userauth.models.UserEntity;
+import io.userauth.dto.auth.AuthenticatedUser;
+import io.userauth.dto.auth.EmailLoginForm;
+import io.userauth.mapper.AuthenticatedUserMapper;
+import io.userauth.models.Users;
 
 
 public class AuthEmailStrategy implements AuthStrategy{
@@ -19,9 +19,9 @@ public class AuthEmailStrategy implements AuthStrategy{
     }
 
     @Override
-    public AuthenticatedUserDTO getAuthentication(Object loginForm) {
-        LoginEmailDTO form = (LoginEmailDTO) loginForm;
-        UserEntity entity = userRepository.findByEmail(form.getEmail());
+    public AuthenticatedUser getAuthentication(Object loginForm) {
+        EmailLoginForm form = (EmailLoginForm) loginForm;
+        Users entity = userRepository.findByEmail(form.getEmail());
 
         if (entity == null){
             throw new IllegalArgumentException("user not found");
@@ -30,6 +30,6 @@ public class AuthEmailStrategy implements AuthStrategy{
             throw new IllegalArgumentException("email password");
         }
         
-        return AuthenticatedUserDTOMapper.toDTO(entity);
+        return AuthenticatedUserMapper.toDTO(entity);
     }
 }

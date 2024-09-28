@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.userauth.common.CookieUtils;
@@ -43,23 +44,30 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         String jwtToken = CookieUtils.getCookieValue(request, "token");
 
         if (jwtToken == null) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "missing JWT token");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Invalid or missing JWT token");
+            return;
         }
 
-        try {
-            UserDetails user = new CustomUserDetails(
-                                    jwtHelper.getSubject(jwtToken),   
-                                    jwtHelper.getId(jwtToken), 
-                                    jwtHelper.getRole(jwtToken));
-        } catch (ExpiredJwtException e) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "JWT Token is expired");
-        } catch (JwtException e) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT Token");
+        Claims claims = jwtHelper.extractAllClaims(jwtToken);
+        System.out.println("Claims:");
+        for (String key : claims.keySet()) {
+            System.out.println(key + ": " + claims.get(key));
         }
-
+        
         filterChain.doFilter(request, response);
-    }
 
-   
- 
+        // try {
+        //     // UserDetails user = new CustomUserDetails(
+        //     //                         jwtHelper.getSubject(jwtToken),   
+        //     //                         jwtHelper.getId(jwtToken), 
+        //     //                         jwtHelper.getRole(jwtToken));
+
+        // } catch (ExpiredJwtException e) {
+        //     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "JWT Token is expired");
+        // } catch (JwtException e) {
+        //     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT Token");
+        // }
+
+    } 
 }

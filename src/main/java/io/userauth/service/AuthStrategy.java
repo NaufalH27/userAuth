@@ -1,7 +1,7 @@
 package io.userauth.service;
 
-import io.userauth.dto.auth.AuthenticatedUserDTO;
+import io.userauth.dto.auth.AuthenticatedUser;
 
 public interface AuthStrategy {
-    AuthenticatedUserDTO getAuthentication(Object loginForm);
+    AuthenticatedUser getAuthentication(Object loginForm);
 }

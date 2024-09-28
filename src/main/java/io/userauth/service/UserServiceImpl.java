@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import io.userauth.data.repositories.UserRepository;
 import io.userauth.dto.user.UserDTO;
 import io.userauth.mapper.UserDTOMapper;
-import io.userauth.models.UserEntity;
+import io.userauth.models.Users;
 
 
 @Service
@@ -21,7 +21,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserById(int id){
-        UserEntity user = repository.findById(id);
+        Users user = repository.findById(id);
         if (user == null){
             throw new IllegalArgumentException("user not found");
         }
@@ -30,7 +30,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserByEmail(String email){
-        UserEntity user = repository.findByEmail(email);
+        Users user = repository.findByEmail(email);
         if (user == null){
             throw new IllegalArgumentException("user not found");
         }
@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserByName(String name){
-        UserEntity user = repository.findByName(name);
+        Users user = repository.findByName(name);
         if (user == null){
             throw new IllegalArgumentException("user not found");
         }
