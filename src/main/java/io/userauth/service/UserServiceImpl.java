@@ -15,12 +15,12 @@ public class UserServiceImpl implements UserService {
     private final UserRepository repository;
 
     @Autowired
-    public UserServiceImpl(UserRepository repository){
+    public UserServiceImpl(UserRepository repository) {
         this.repository = repository;
     }
 
     @Override
-    public UserDTO getUserById(int id){
+    public UserDTO getUserById(int id) {
         Users user = repository.findById(id);
         if (user == null){
             throw new IllegalArgumentException("user not found");
@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUserByEmail(String email){
+    public UserDTO getUserByEmail(String email) {
         Users user = repository.findByEmail(email);
         if (user == null){
             throw new IllegalArgumentException("user not found");
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUserByName(String name){
+    public UserDTO getUserByName(String name) {
         Users user = repository.findByName(name);
         if (user == null){
             throw new IllegalArgumentException("user not found");
@@ -48,16 +48,15 @@ public class UserServiceImpl implements UserService {
     
 
     @Override
-    public void updateEmail(int id, String newEmail){
+    public void updateEmail(int id, String newEmail) {
         repository.updateEmail(id, newEmail);
         
     }
 
     @Override
-    public void deleteUser(int id){
+    public void deleteUser(int id) {
         repository.deleteUser(id);
     }
   
-    
 
 }

@@ -16,14 +16,14 @@ public class UserRepositoryImpl implements UserRepository {
     @PersistenceContext
     private final EntityManager entityManager;
 
-    public UserRepositoryImpl(EntityManager entityManager){
+    public UserRepositoryImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
 
     @Override
     @Transactional
-    public void createUser(Users user){
+    public void createUser(Users user) {
         entityManager.persist(user);
     }
 
@@ -43,7 +43,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     @Transactional(readOnly = true)
-    public Users findByEmail(String email){
+    public Users findByEmail(String email) {
         final TypedQuery<Users> query = entityManager.createQuery("SELECT u FROM Users u WHERE u.email = :email", Users.class);
         return query.setParameter("email", email).getResultList().stream().findFirst().orElse(null);
     }

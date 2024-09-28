@@ -25,7 +25,7 @@ public class AuthController {
     private final AuthService authService;
     
     @Autowired
-    public AuthController(AuthService authService){
+    public AuthController(AuthService authService) {
         this.authService = authService;
     }
 
@@ -36,19 +36,19 @@ public class AuthController {
     }
 
     @PostMapping(value = "/verify")
-    public ResponseEntity<?> emailVerification(@RequestBody RegistrationSession emailVerification){
+    public ResponseEntity<?> emailVerification(@RequestBody RegistrationSession emailVerification) {
         authService.verifyEmail(emailVerification);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(value = "/login/username")
-    public ResponseEntity<?> getAuthenticationByName(@RequestBody UsernameLoginForm loginForm, HttpServletResponse response){
+    public ResponseEntity<?> getAuthenticationByName(@RequestBody UsernameLoginForm loginForm, HttpServletResponse response) {
         authService.authenticate(AuthStrategyType.USERNAME, loginForm, response);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(value = "/login/email")
-    public ResponseEntity<?> getAuthenticationByEmail(@RequestBody EmailLoginForm loginForm, HttpServletResponse response){
+    public ResponseEntity<?> getAuthenticationByEmail(@RequestBody EmailLoginForm loginForm, HttpServletResponse response) {
         authService.authenticate(AuthStrategyType.EMAIL, loginForm, response);     
         return new ResponseEntity<>(HttpStatus.OK);
     }

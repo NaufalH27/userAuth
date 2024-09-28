@@ -19,7 +19,7 @@ public class SecurityConfig {
     private final JWTHelper jwtHelper;
 
     @Autowired
-    public SecurityConfig(JWTHelper jwtHelper){
+    public SecurityConfig(JWTHelper jwtHelper) {
         this.jwtHelper = jwtHelper;
     }
 

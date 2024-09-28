@@ -66,7 +66,7 @@ public class AuthServiceImpl implements AuthService {
         CookieUtils.sendCookies(response, "token", JWTToken);
     }
     
-    private AuthStrategy createAuthStrategy(AuthStrategyType type){
+    private AuthStrategy createAuthStrategy(AuthStrategyType type) {
         return switch (type) {
             case USERNAME -> new AuthUsernameStrategy(userRepository);
             case EMAIL -> new AuthEmailStrategy(userRepository);

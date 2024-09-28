@@ -14,7 +14,7 @@ public class AuthEmailStrategy implements AuthStrategy{
     
     private final UserRepository userRepository;
 
-    public AuthEmailStrategy(UserRepository userRepository){
+    public AuthEmailStrategy(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

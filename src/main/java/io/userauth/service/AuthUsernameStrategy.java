@@ -14,7 +14,7 @@ public class AuthUsernameStrategy implements AuthStrategy {
     
     private final UserRepository userRepository;
 
-    public AuthUsernameStrategy(UserRepository userRepository){
+    public AuthUsernameStrategy(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
