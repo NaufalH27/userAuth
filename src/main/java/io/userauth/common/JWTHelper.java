@@ -3,6 +3,7 @@ package io.userauth.common;
 import java.util.Date;
 import java.util.UUID;
 import java.util.Map;
+import java.util.List;
 
 import javax.crypto.SecretKey;
 
@@ -41,28 +42,48 @@ public class JWTHelper {
     }
     
     public Claims extractAllClaims(String token) {
+        if (this.secretKey == null || this.secretKey.isEmpty()) {
+            throw new IllegalStateException("JWT secret key is not set");
+        }
+
         SecretKey Key = getSignInKey();
         return Jwts.parserBuilder().setSigningKey(Key).build().parseClaimsJws(token).getBody();
     }
 
-    public String getSubject(String token){
+    public String getSubject(String token) {
         final Claims claims = this.extractAllClaims(token);
-        return claims.getSubject();        
+        Object subject =  claims.getSubject();
+
+        if (subject == null || !(subject instanceof String)){
+            throw new IllegalArgumentException("Illegal Token claims");
+        }
+
+        return (String) subject;     
+    }
+   
+    public List<String> getRole(String token) {
+        final Claims claims = this.extractAllClaims(token);
+        Object roles = claims.get("role");
+        
+        if(roles != null && claims instanceof List<?>){
+            List<?> roleList = (List<?>) roles;
+
+            if(roleList.stream().allMatch(role -> role instanceof String)){
+                return (List<String>) roleList;
+            }
+        }   
+
+        throw new IllegalArgumentException("Illegal Token claims");
     }
 
-    // public List<String> getRole(String token){
-    //     final Claims claims = this.extractAllClaims(token);
-    //     Object roleList =  claims.get("role");
-    //     if (roleList.getClass().isArray()){
-    //         return roleList;   
-    //     } else {
+    public UUID getId(String token) {
+        final Claims claims = this.extractAllClaims(token);        
+        Object id = claims.get("id");
 
-    //     }
-         
-    // }
+        if (id == null || !(id instanceof String)){
+            throw new IllegalArgumentException("Illegal Token claims");
+        }
 
-    public UUID getId(String token){
-        final Claims claims = this.extractAllClaims(token);
         return UUID.fromString((String) claims.get("id"));
     }
 

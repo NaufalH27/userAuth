@@ -1,12 +1,16 @@
 package io.userauth.presentation.middleware;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import io.jsonwebtoken.Claims;
+
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.userauth.common.CookieUtils;
@@ -46,28 +50,29 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         if (jwtToken == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Invalid or missing JWT token");
-            return;
         }
 
-        Claims claims = jwtHelper.extractAllClaims(jwtToken);
-        System.out.println("Claims:");
-        for (String key : claims.keySet()) {
-            System.out.println(key + ": " + claims.get(key));
-        }
-        
-        filterChain.doFilter(request, response);
 
-        // try {
-        //     // UserDetails user = new CustomUserDetails(
-        //     //                         jwtHelper.getSubject(jwtToken),   
-        //     //                         jwtHelper.getId(jwtToken), 
-        //     //                         jwtHelper.getRole(jwtToken));
+        try {
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            jwtHelper.getRole(jwtToken).forEach(role -> {
+                authorities.add(new SimpleGrantedAuthority(role));
+            });
+            
+            UserDetails user = new CustomUserDetails(
+                                    jwtHelper.getSubject(jwtToken),   
+                                    jwtHelper.getId(jwtToken), 
+                                    authorities);
 
-        // } catch (ExpiredJwtException e) {
-        //     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "JWT Token is expired");
-        // } catch (JwtException e) {
-        //     response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT Token");
-        // }
+            filterChain.doFilter(request, response);
+
+        } catch (ExpiredJwtException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("JWT Token is expired");
+        } catch (JwtException e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Invalid JWT Token");
+        } 
 
     } 
 }
