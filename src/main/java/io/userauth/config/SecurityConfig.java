@@ -30,7 +30,6 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS).permitAll()
                 .requestMatchers("/auth/**").permitAll() 
-                .requestMatchers("/users/**").permitAll() 
                 .anyRequest().authenticated() 
             ).addFilterBefore(new JwtTokenFilter(this.jwtHelper), BasicAuthenticationFilter.class);
             return http.build();

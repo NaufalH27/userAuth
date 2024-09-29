@@ -96,7 +96,7 @@ public class JWTHelper {
         List<GrantedAuthority> authorities = new ArrayList<>();
         List<String> roleList = getRoleList(token);
         roleList.forEach(role -> {
-                authorities.add(new SimpleGrantedAuthority(role));
+                authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
             });
         return authorities;
     }

@@ -51,10 +51,8 @@ public class AuthServiceImpl implements AuthService {
         registeredUser.setPasswordHash(PasswordUtils.hashPassword(creationForm.getPassword()));
         
         Set<Roles> userRole = new HashSet<>();
-        userRole.add(roleRepository.getAdminRole());
         userRole.add(roleRepository.getUserRole());
         registeredUser.setRoles(userRole);
-        
 
         userRepository.createUser(registeredUser);
     }

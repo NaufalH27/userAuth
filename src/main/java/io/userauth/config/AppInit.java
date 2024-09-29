@@ -18,8 +18,8 @@ public class AppInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        System.out.println("database initilizer successful");
         roleRepository.initialRoles();
+        System.out.println("database initilizer successful");
     }
     
 }
