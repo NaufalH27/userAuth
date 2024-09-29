@@ -1,11 +1,12 @@
 package io.userauth.data.repositories;
 
 import java.util.List;
+import java.util.UUID;
 
 import io.userauth.models.Users;
 
 public interface UserRepository {
-    public Users findById(int id);
+    public Users findById(UUID id);
     public void createUser(Users entity);
     public Users findByName(String name);
     public Users findByEmail(String email);

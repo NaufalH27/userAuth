@@ -1,6 +1,7 @@
 package io.userauth.data.repositories;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,7 +31,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     @Transactional(readOnly = true)
-    public Users findById(int id){
+    public Users findById(UUID id){
         return entityManager.find(Users.class, id);
     }
 

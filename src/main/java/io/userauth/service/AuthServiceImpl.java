@@ -61,7 +61,7 @@ public class AuthServiceImpl implements AuthService {
     public void authenticate(AuthStrategyType type, Object loginForm, HttpServletResponse response){
         AuthenticatedUser authenticatedUser = createAuthStrategy(type).getAuthentication(loginForm);
         String JWTToken = generateToken(authenticatedUser);
-        CookieUtils.sendCookies(response, "token", JWTToken);
+        CookieUtils.sendCookies(response, "jwtToken", JWTToken);
     }
     
     private AuthStrategy createAuthStrategy(AuthStrategyType type) {

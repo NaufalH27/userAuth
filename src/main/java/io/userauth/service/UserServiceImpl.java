@@ -1,5 +1,7 @@
 package io.userauth.service;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +22,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO getUserById(int id) {
+    public UserDTO getUserById(UUID id) {
         Users user = repository.findById(id);
         if (user == null){
             throw new IllegalArgumentException("user not found");

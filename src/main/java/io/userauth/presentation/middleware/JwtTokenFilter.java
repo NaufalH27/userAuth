@@ -44,7 +44,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        String jwtToken = CookieUtils.getCookieValue(request, "token");
+        String jwtToken = CookieUtils.getCookieValue(request, "jwtToken");
 
         if (jwtToken == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
@@ -53,7 +53,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
 
         try {
-
             UserDetails user = new CustomUserDetails(
                                     jwtHelper.getSubject(jwtToken),   
                                     jwtHelper.getId(jwtToken), 

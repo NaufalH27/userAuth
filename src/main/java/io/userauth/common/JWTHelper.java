@@ -37,8 +37,8 @@ public class JWTHelper {
     public String generateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setIssuer("userauth")
-                .setSubject(subject)
                 .setClaims(claims)
+                .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + this.expirationTime))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
@@ -46,18 +46,14 @@ public class JWTHelper {
     }
     
     public Claims extractAllClaims(String token) {
-        if (this.secretKey == null || this.secretKey.isEmpty()) {
-            //need logger
-            }
-
         SecretKey Key = getSignInKey();
         return Jwts.parserBuilder().setSigningKey(Key).build().parseClaimsJws(token).getBody();
     }
 
     public String getSubject(String token) {
         final Claims claims = this.extractAllClaims(token);
-        Object subject =  claims.getSubject();
-
+        Object subject = claims.getSubject();
+        System.out.println(claims);
         if (subject == null || !(subject instanceof String)){
             throw new IllegalArgumentException();
         }
@@ -68,7 +64,6 @@ public class JWTHelper {
     public List<String> getRoleList(String token) {
         final Claims claims = this.extractAllClaims(token);
         Object roles = claims.get("role");
-        
         if(roles != null && roles instanceof List<?>){
             List<?> roleList = (List<?>) roles;
 
@@ -84,6 +79,7 @@ public class JWTHelper {
         final Claims claims = this.extractAllClaims(token);        
         Object id = claims.get("id");
 
+        System.out.println(id);
         if (id == null || !(id instanceof String)){
             throw new IllegalArgumentException();
         }

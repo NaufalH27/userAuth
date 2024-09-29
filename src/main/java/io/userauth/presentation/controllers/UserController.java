@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,20 +30,19 @@ public class UserController {
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value ="/me")
     public ResponseEntity<String> getMeProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
-
         UserDTO user = userService.getUserById(userDetails.getId()); 
-        return new ResponseEntity<>(, HttpStatus.OK);
+        return new ResponseEntity<>("HI " + user.getUsername() +"\n" + user.getEmail(), HttpStatus.OK);
     }
 
     @DeleteMapping(value ="/delete")
     public ResponseEntity<Void> deleteUser(@PathVariable int id) {
-        service.deleteUser(id);
+        userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(value = "/update/email")
     public ResponseEntity<Void> updateEmail(@PathVariable int id, String newEmail) {
-        service.updateEmail(id, newEmail);
+        userService.updateEmail(id, newEmail);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
