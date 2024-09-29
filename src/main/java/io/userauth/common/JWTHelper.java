@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import java.util.Map;
 import java.util.List;
 
@@ -53,7 +54,6 @@ public class JWTHelper {
     public String getSubject(String token) {
         final Claims claims = this.extractAllClaims(token);
         Object subject = claims.getSubject();
-        System.out.println(claims);
         if (subject == null || !(subject instanceof String)){
             throw new IllegalArgumentException();
         }
@@ -68,7 +68,9 @@ public class JWTHelper {
             List<?> roleList = (List<?>) roles;
 
             if(roleList.stream().allMatch(role -> role instanceof String)){
-                return (List<String>) roleList;
+                return roleList.stream()
+                           .map(role -> (String) role)
+                           .collect(Collectors.toList());
             }
         }   
 
@@ -79,7 +81,6 @@ public class JWTHelper {
         final Claims claims = this.extractAllClaims(token);        
         Object id = claims.get("id");
 
-        System.out.println(id);
         if (id == null || !(id instanceof String)){
             throw new IllegalArgumentException();
         }
