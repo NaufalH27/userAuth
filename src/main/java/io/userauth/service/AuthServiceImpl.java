@@ -1,37 +1,30 @@
 package io.userauth.service;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.userauth.common.CookieUtils;
-import io.userauth.common.JWTHelper;
 import io.userauth.common.PasswordUtils;
 import io.userauth.data.repositories.RoleRepository;
 import io.userauth.data.repositories.UserRepository;
 import io.userauth.dto.auth.AuthStrategyType;
 import io.userauth.dto.auth.AuthenticatedUser;
-import io.userauth.dto.auth.UserCreationForm;
 import io.userauth.dto.auth.RegistrationSession;
+import io.userauth.dto.auth.UserCreationForm;
 import io.userauth.models.Roles;
 import io.userauth.models.Users;
-import jakarta.servlet.http.HttpServletResponse;
 
 
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    private final JWTHelper jwtHelper;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
     @Autowired
-    public AuthServiceImpl(JWTHelper jwtHelper, UserRepository userRepository, RoleRepository roleRepository){
-        this.jwtHelper = jwtHelper;
+    public AuthServiceImpl(UserRepository userRepository, RoleRepository roleRepository){
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
     }
@@ -58,10 +51,8 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public void authenticate(AuthStrategyType type, Object loginForm, HttpServletResponse response){
-        AuthenticatedUser authenticatedUser = createAuthStrategy(type).getAuthentication(loginForm);
-        String JWTToken = generateToken(authenticatedUser);
-        CookieUtils.sendCookies(response, "jwtToken", JWTToken);
+    public AuthenticatedUser getAuthenticatedUser(AuthStrategyType type, Object loginForm){
+        return createAuthStrategy(type).getAuthentication(loginForm);
     }
     
     private AuthStrategy createAuthStrategy(AuthStrategyType type) {
@@ -70,15 +61,6 @@ public class AuthServiceImpl implements AuthService {
             case EMAIL -> new AuthEmailStrategy(userRepository);
             default -> throw new IllegalArgumentException("nonexistance authentication strategy");
         };
-    }
-
-    private String generateToken(AuthenticatedUser user) {
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("id", user.getId().toString());
-        claims.put("email", user.getEmail());
-        claims.put("role", user.getRole());
-        String subject = user.getUsername();
-        return jwtHelper.generateToken(claims, subject);
     }
 
     @Override
