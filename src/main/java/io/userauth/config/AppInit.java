@@ -3,7 +3,7 @@ package io.userauth.config;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import io.userauth.constant.RoleConstant;
+import io.userauth.constant.RoleName;
 import io.userauth.service.RoleService;
 
 @Component
@@ -17,9 +17,9 @@ public class AppInit implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        roleService.createRole(RoleConstant.ADMIN);
-        roleService.createRole(RoleConstant.USER);
-        roleService.createRole(RoleConstant.OWNER);
+        roleService.createRole(RoleName.ADMIN);
+        roleService.createRole(RoleName.USER);
+        roleService.createRole(RoleName.OWNER);
         System.out.println("database initilizer successful");
     }
     

@@ -17,6 +17,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import io.userauth.constant.JWTClaimName;
 import io.userauth.dto.auth.AuthenticatedUser;
 
 @Service
@@ -30,16 +31,16 @@ public class JWTHelper {
 
     public String generateAccessToken(AuthenticatedUser user) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put("id", user.getId().toString());
-        claims.put("email", user.getEmail());
-        claims.put("role", user.getRole());
+        claims.put(JWTClaimName.ID, user.getId().toString());
+        claims.put(JWTClaimName.EMAIL, user.getEmail());
+        claims.put(JWTClaimName.ROLES, user.getRole());
         String subject = user.getUsername();
         return buildAccessToken(claims, subject);
     }
 
     private String buildAccessToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
-                .setIssuer("userauth")
+                .setIssuer(JWTClaimName.ISSUER)
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -69,7 +70,7 @@ public class JWTHelper {
 
     public UUID getId(String token) {
         final Claims claims = this.extractAllClaims(token);        
-        Object id = claims.get("id");
+        Object id = claims.get(JWTClaimName.ID);
 
         if (id == null || !(id instanceof String)){
             throw new IllegalArgumentException();
@@ -79,7 +80,7 @@ public class JWTHelper {
    
     public List<String> getRoleList(String token) {
         final Claims claims = this.extractAllClaims(token);
-        Object roles = claims.get("role");
+        Object roles = claims.get(JWTClaimName.ROLES);
 
         if(roles != null && roles instanceof List<?>){
             List<?> roleList = (List<?>) roles;

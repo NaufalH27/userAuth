@@ -1,7 +1,7 @@
 package io.userauth.constant;
 
-public class RoleConstant {
-    private RoleConstant() {}
+public class RoleName {
+    private RoleName() {}
 
     public static final String USER = "USER";
     public static final String ADMIN = "ADMIN";

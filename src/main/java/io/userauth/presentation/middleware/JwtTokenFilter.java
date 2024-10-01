@@ -28,6 +28,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 
+    private final String ROLE_SUFFIX = "ROLE_";
     private final JWTHelper jwtHelper;
 
     public JwtTokenFilter(JWTHelper jwtHelper) {
@@ -87,7 +88,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
     private List<GrantedAuthority> mapRoleListToGrantedAuthorities(List<String> roleList){
         List<GrantedAuthority> authorities = new ArrayList<>();
         roleList.forEach(role -> {
-                authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+                authorities.add(new SimpleGrantedAuthority(ROLE_SUFFIX + role));
             });
         return authorities;
     }
