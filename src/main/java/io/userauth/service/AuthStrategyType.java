@@ -1,4 +1,4 @@
-package io.userauth.dto.auth;
+package io.userauth.service;
 
 public enum AuthStrategyType {
     USERNAME,

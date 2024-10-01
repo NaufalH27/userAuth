@@ -1,6 +1,5 @@
 package io.userauth.service;
 
-import io.userauth.dto.auth.AuthStrategyType;
 import jakarta.servlet.http.HttpServletResponse;
 
 public interface LoginService {

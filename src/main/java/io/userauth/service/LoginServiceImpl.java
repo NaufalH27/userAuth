@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import io.userauth.common.CookieUtils;
 import io.userauth.common.JWTHelper;
 import io.userauth.constant.CookieName;
-import io.userauth.dto.auth.AuthStrategyType;
 import io.userauth.dto.auth.AuthenticatedUser;
 import jakarta.servlet.http.HttpServletResponse;
 

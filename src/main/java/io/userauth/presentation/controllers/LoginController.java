@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import io.userauth.dto.auth.AuthStrategyType;
 import io.userauth.dto.auth.EmailLoginForm;
 import io.userauth.dto.auth.UsernameLoginForm;
+import io.userauth.service.AuthStrategyType;
 import io.userauth.service.LoginService;
 import jakarta.servlet.http.HttpServletResponse;
 
