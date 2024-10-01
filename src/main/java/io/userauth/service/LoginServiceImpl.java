@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import io.userauth.common.CookieUtils;
 import io.userauth.common.JWTHelper;
+import io.userauth.constant.CookieName;
 import io.userauth.dto.auth.AuthStrategyType;
 import io.userauth.dto.auth.AuthenticatedUser;
 import jakarta.servlet.http.HttpServletResponse;
@@ -24,7 +25,7 @@ public class LoginServiceImpl implements LoginService {
         AuthenticatedUser authenticatedUser = authService.getAuthenticatedUser(type, loginForm);
         String accessToken = jwtHelper.generateAccessToken(authenticatedUser);
         String refreshToken = jwtHelper.generateRefreshToken();
-        CookieUtils.sendCookies(response, "AccessToken", accessToken);
-        CookieUtils.sendCookies(response, "refreshToken", refreshToken);
+        CookieUtils.sendCookies(response, CookieName.ACCESS_TOKEN, accessToken);
+        CookieUtils.sendCookies(response, CookieName.REFRESH_TOKEN, refreshToken);
     }
 }

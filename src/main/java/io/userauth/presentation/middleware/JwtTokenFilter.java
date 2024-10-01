@@ -18,6 +18,7 @@ import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import io.userauth.common.CookieUtils;
 import io.userauth.common.JWTHelper;
+import io.userauth.constant.CookieName;
 import io.userauth.dto.auth.CustomUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -46,7 +47,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        String accessToken = CookieUtils.getCookieValue(request, "accessToken");
+        String accessToken = CookieUtils.getCookieValue(request, CookieName.ACCESS_TOKEN);
 
         if (accessToken == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
