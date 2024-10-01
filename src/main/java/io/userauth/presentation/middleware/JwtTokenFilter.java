@@ -1,13 +1,11 @@
 package io.userauth.presentation.middleware;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -20,6 +18,7 @@ import io.userauth.common.CookieUtils;
 import io.userauth.common.JWTHelper;
 import io.userauth.constant.CookieName;
 import io.userauth.dto.auth.CustomUserDetails;
+import io.userauth.mapper.RoleAuthorityMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,7 +27,7 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private final String ROLE_SUFFIX = "ROLE_";
+    
     private final JWTHelper jwtHelper;
 
     public JwtTokenFilter(JWTHelper jwtHelper) {
@@ -59,7 +58,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         try {
             String subject = jwtHelper.getSubject(accessToken);
             UUID userId = jwtHelper.getId(accessToken);
-            List<GrantedAuthority> userRoles = mapRoleListToGrantedAuthorities(jwtHelper.getRoleList(accessToken));
+            List<GrantedAuthority> userRoles = RoleAuthorityMapper.toAuthorities(jwtHelper.getRoleList(accessToken));
             UserDetails user = new CustomUserDetails(subject, userId,userRoles);
                                     
             UsernamePasswordAuthenticationToken authentication =
@@ -85,11 +84,5 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         } 
     } 
 
-    private List<GrantedAuthority> mapRoleListToGrantedAuthorities(List<String> roleList){
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        roleList.forEach(role -> {
-                authorities.add(new SimpleGrantedAuthority(ROLE_SUFFIX + role));
-            });
-        return authorities;
-    }
+ 
 }
