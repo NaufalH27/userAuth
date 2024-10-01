@@ -40,9 +40,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         HttpServletResponse response,
         FilterChain filterChain
         ) throws ServletException, IOException {
-        String path = request.getServletPath();
 
-        if(path.startsWith("/signup") || path.startsWith("/login")) {
+        String path = request.getRequestURI();
+        if (path.startsWith("/signup") || path.startsWith("/login") || path.startsWith("/logout")) {
             filterChain.doFilter(request, response);
             return;
         }

@@ -57,7 +57,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     @Transactional
-    public void updateEmail(int id, String newEmail) {
+    public void updateEmail(UUID id, String newEmail) {
         Users user = entityManager.find(Users.class, id);
         if (user != null){
             user.setEmail(newEmail);
@@ -66,7 +66,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     @Transactional
-    public void deleteUser(int id) {
+    public void deleteUser(UUID id) {
         Users user = entityManager.find(Users.class, id);
         entityManager.remove(user);
     }

@@ -80,13 +80,13 @@ public class UserServiceImpl implements UserService {
     
 
     @Override
-    public void updateEmail(int id, String newEmail) {
+    public void updateEmail(UUID id, String newEmail) {
         userRepository.updateEmail(id, newEmail);
         
     }
 
     @Override
-    public void deleteUser(int id) {
+    public void deleteUser(UUID id) {
         userRepository.deleteUser(id);
     }
   

@@ -1,5 +1,7 @@
 package io.userauth.presentation.controllers;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,14 +36,15 @@ public class UserController {
         return new ResponseEntity<>("HI " + user.getUsername() +"\n" + user.getEmail(), HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping(value ="/delete")
-    public ResponseEntity<Void> deleteUser(@PathVariable int id) {
+    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
         userService.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(value = "/update/email")
-    public ResponseEntity<Void> updateEmail(@PathVariable int id, String newEmail) {
+    public ResponseEntity<Void> updateEmail(@PathVariable UUID id, String newEmail) {
         userService.updateEmail(id, newEmail);
         return new ResponseEntity<>(HttpStatus.OK);
     }
