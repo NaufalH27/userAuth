@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import io.userauth.dto.auth.AuthStrategyType;
-import io.userauth.dto.auth.AuthenticatedUser;
 import io.userauth.dto.auth.EmailLoginForm;
 import io.userauth.dto.auth.RegistrationSession;
 import io.userauth.dto.auth.UserCreationForm;
@@ -38,13 +37,13 @@ public class AuthController {
 
     @PostMapping(value = "/login/username")
     public ResponseEntity<?> getAuthenticationByName(@RequestBody UsernameLoginForm loginForm, HttpServletResponse response) {
-        AuthenticatedUser authenticatedUser = authService.getAuthenticatedUser(AuthStrategyType.USERNAME, loginForm);
+        authService.authenticate(AuthStrategyType.USERNAME, loginForm, response);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(value = "/login/email")
     public ResponseEntity<?> getAuthenticationByEmail(@RequestBody EmailLoginForm loginForm, HttpServletResponse response) {
-        AuthenticatedUser authenticatedUser = authService.getAuthenticatedUser(AuthStrategyType.USERNAME, loginForm);
+        authService.authenticate(AuthStrategyType.USERNAME, loginForm, response);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

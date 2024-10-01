@@ -1,13 +1,11 @@
 package io.userauth.common;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import javax.crypto.SecretKey;
 
@@ -22,7 +20,6 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.userauth.dto.auth.AuthenticatedUser;
-import jakarta.servlet.http.HttpServletResponse;
 
 @Service
 public class JWTHelper {
@@ -33,24 +30,7 @@ public class JWTHelper {
     @Value("${jwt.expiration}")
     private long expirationTime;
 
-    private SecretKey getSignInKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(this.secretKey); 
-        return Keys.hmacShaKeyFor(keyBytes);                
-    }
-
-
-    public void sendTokenToClient(AuthenticatedUser user, HttpServletResponse response) {
-        String accessToken = generateAccessToken(user);
-        String refreshToken = generateRefreshToken();
-        CookieUtils.sendCookies(response, "AccessToken", accessToken);
-        CookieUtils.sendCookies(response, "refreshToken", refreshToken);
-    }
-
-    public void refreshToken() {
-
-    }
-
-    private String generateAccessToken(AuthenticatedUser user) {
+    public String generateAccessToken(AuthenticatedUser user) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", user.getId().toString());
         claims.put("email", user.getEmail());
@@ -70,22 +50,22 @@ public class JWTHelper {
                 .compact();
     }
 
-
-    private String generateRefreshToken(){
+    public String generateRefreshToken(){
         return UUID.randomUUID().toString();
     }
 
-
-    
-
+    private SecretKey getSignInKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(this.secretKey); 
+        return Keys.hmacShaKeyFor(keyBytes);                
+    }
 
     public String getSubject(String token) {
         final Claims claims = this.extractAllClaims(token);
         Object subject = claims.getSubject();
+
         if (subject == null || !(subject instanceof String)){
             throw new IllegalArgumentException();
         }
-
         return (String) subject;     
     }
 
@@ -96,33 +76,24 @@ public class JWTHelper {
         if (id == null || !(id instanceof String)){
             throw new IllegalArgumentException();
         }
-
         return UUID.fromString((String) claims.get("id"));
     }
-
-
-    public Collection<? extends GrantedAuthority> getGrantedAuthorities(String token){
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        List<String> roleList = getRoleList(token);
-        roleList.forEach(role -> {
-                authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
-            });
-        return authorities;
-    }
    
-    private List<String> getRoleList(String token) {
+    public List<GrantedAuthority> getRoleList(String token) {
         final Claims claims = this.extractAllClaims(token);
         Object roles = claims.get("role");
+
         if(roles != null && roles instanceof List<?>){
             List<?> roleList = (List<?>) roles;
 
             if(roleList.stream().allMatch(role -> role instanceof String)){
-                return roleList.stream()
-                           .map(role -> (String) role)
-                           .collect(Collectors.toList());
+                List<GrantedAuthority> authorityList = new ArrayList<>();
+                roleList.forEach(role -> {
+                    authorityList.add(new SimpleGrantedAuthority("ROLE_" + role));
+                });
+                return authorityList;
             }
         }   
-
         throw new IllegalArgumentException();
     }
 
@@ -130,5 +101,8 @@ public class JWTHelper {
         SecretKey Key = getSignInKey();
         return Jwts.parserBuilder().setSigningKey(Key).build().parseClaimsJws(token).getBody();
     }
+
+    
+
 
 }
