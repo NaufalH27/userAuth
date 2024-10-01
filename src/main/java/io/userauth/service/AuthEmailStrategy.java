@@ -12,7 +12,7 @@ import io.userauth.models.Users;
 
 public class AuthEmailStrategy implements AuthStrategy{
     
-    private final UserService userService;
+    private final UserRepository userRepository;
 
     public AuthEmailStrategy(UserRepository userRepository) {
         this.userRepository = userRepository;

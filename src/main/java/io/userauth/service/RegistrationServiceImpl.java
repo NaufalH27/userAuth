@@ -7,29 +7,30 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import io.userauth.common.PasswordUtils;
 import io.userauth.data.repositories.RoleRepository;
+import io.userauth.data.repositories.UserRepository;
 import io.userauth.dto.auth.UserCreationForm;
 import io.userauth.models.Roles;
 import io.userauth.models.Users;
 
 public class RegistrationServiceImpl implements RegistrationService {
 
-    private final UserService userService;
+    private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
     @Autowired
-    public RegistrationServiceImpl(UserService userService, RoleRepository roleRepository) {
-        this.userService = userService;
+    public RegistrationServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
+        this.userRepository = userRepository;
         this.roleRepository = roleRepository;
     }
 
     @Override
     public void register(UserCreationForm creationForm) {
-        if (userService.existByEmail(creationForm.getEmail())){
 
+        if(userRepository.findByName(creationForm.getUsername()) != null){
+            throw new IllegalArgumentException("username already used");
         }
-        
-        if (userService.existByUsername(creationForm.getUsername())){
-            
+        if(userRepository.findByEmail(creationForm.getEmail()) != null){
+            throw new IllegalArgumentException("email already used");
         }
 
         Users registeredUser = new Users();
