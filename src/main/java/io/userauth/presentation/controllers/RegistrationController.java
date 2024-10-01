@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import io.userauth.dto.auth.UserCreationForm;
 import io.userauth.service.RegistrationService;
@@ -14,7 +13,6 @@ import jakarta.validation.Valid;
 
 
 @Controller
-@RequestMapping(value = "/auth")
 public class RegistrationController {
     
     private final RegistrationService registrationService;

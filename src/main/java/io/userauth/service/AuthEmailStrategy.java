@@ -2,6 +2,8 @@ package io.userauth.service;
 
 
 
+import org.springframework.stereotype.Service;
+
 import io.userauth.common.PasswordUtils;
 import io.userauth.data.repositories.UserRepository;
 import io.userauth.dto.auth.AuthenticatedUser;
@@ -9,7 +11,7 @@ import io.userauth.dto.auth.EmailLoginForm;
 import io.userauth.mapper.AuthenticatedUserMapper;
 import io.userauth.models.Users;
 
-
+@Service
 public class AuthEmailStrategy implements AuthStrategy{
     
     private final UserRepository userRepository;

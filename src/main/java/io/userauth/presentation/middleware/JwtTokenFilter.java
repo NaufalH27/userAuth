@@ -42,7 +42,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         ) throws ServletException, IOException {
         String path = request.getServletPath();
 
-        if(path.startsWith("/auth")){
+        if(path.startsWith("/signup") || path.startsWith("/login")) {
             filterChain.doFilter(request, response);
             return;
         }

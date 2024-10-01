@@ -1,7 +1,10 @@
 package io.userauth.service;
 
+import org.springframework.stereotype.Service;
+
 import io.userauth.dto.auth.UserCreationForm;
 
+@Service
 public class RegistrationServiceImpl implements RegistrationService {
 
     private final UserService userService;

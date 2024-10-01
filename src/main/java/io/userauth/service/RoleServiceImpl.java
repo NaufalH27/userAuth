@@ -1,12 +1,14 @@
 package io.userauth.service;
 
+import org.springframework.stereotype.Service;
+
 import io.userauth.data.repositories.RoleRepository;
 import io.userauth.models.Roles;
 
+@Service
 public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
-
 
     public RoleServiceImpl(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
