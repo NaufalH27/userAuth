@@ -20,12 +20,12 @@ import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping(value = "/auth")
-public class AuthController {
+public class RegistrationController {
     
-    private final AuthService authService;
+    private final RegistrationServ authService;
     
     @Autowired
-    public AuthController(AuthService authService) {
+    public RegistrationController(AuthService authService) {
         this.authService = authService;
     }
 
@@ -35,17 +35,6 @@ public class AuthController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/login/username")
-    public ResponseEntity<?> getAuthenticationByName(@RequestBody UsernameLoginForm loginForm, HttpServletResponse response) {
-        authService.authenticate(AuthStrategyType.USERNAME, loginForm, response);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/login/email")
-    public ResponseEntity<?> getAuthenticationByEmail(@RequestBody EmailLoginForm loginForm, HttpServletResponse response) {
-        authService.authenticate(AuthStrategyType.USERNAME, loginForm, response);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 
     @PostMapping(value = "/verify")
     public ResponseEntity<?> emailVerification(@RequestBody RegistrationSession emailVerification) {

@@ -1,11 +1,13 @@
 package io.userauth.presentation.middleware;
 
 import java.io.IOException;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -37,27 +39,27 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         HttpServletResponse response,
         FilterChain filterChain
         ) throws ServletException, IOException {
-
         String path = request.getServletPath();
+
         if(path.startsWith("/auth")){
             filterChain.doFilter(request, response);
             return;
         }
 
-        String accesToken = CookieUtils.getCookieValue(request, "accessToken");
+        String accessToken = CookieUtils.getCookieValue(request, "accessToken");
 
-        if (accesToken == null) {
+        if (accessToken == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Invalid or missing JWT token");
             return;
         }
 
         try {
-            String subject = jwtHelper.getSubject(accesToken); 
-            UUID id = jwtHelper.getId(accesToken);
-            Collection<? extends GrantedAuthority> grandtedAuthorityList = jwtHelper.getRoleList(accesToken);
-            UserDetails user = new CustomUserDetails(subject, id, grandtedAuthorityList);
-
+            String subject = jwtHelper.getSubject(accessToken);
+            UUID userId = jwtHelper.getId(accessToken);
+            List<GrantedAuthority> userRoles = mapRoleListToGrantedAuthorities(jwtHelper.getRoleList(accessToken));
+            UserDetails user = new CustomUserDetails(subject, userId,userRoles);
+                                    
             UsernamePasswordAuthenticationToken authentication =
                     new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
 
@@ -81,5 +83,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         } 
     } 
 
-
+    private List<GrantedAuthority> mapRoleListToGrantedAuthorities(List<String> roleList){
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        roleList.forEach(role -> {
+                authorities.add(new SimpleGrantedAuthority("ROLE_" + role));
+            });
+        return authorities;
+    }
 }

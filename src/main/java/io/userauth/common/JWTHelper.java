@@ -1,17 +1,15 @@
 package io.userauth.common;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
@@ -76,33 +74,27 @@ public class JWTHelper {
         if (id == null || !(id instanceof String)){
             throw new IllegalArgumentException();
         }
-        return UUID.fromString((String) claims.get("id"));
+        return UUID.fromString((String) id);
     }
    
-    public List<GrantedAuthority> getRoleList(String token) {
+    public List<String> getRoleList(String token) {
         final Claims claims = this.extractAllClaims(token);
         Object roles = claims.get("role");
 
         if(roles != null && roles instanceof List<?>){
             List<?> roleList = (List<?>) roles;
-
+            
             if(roleList.stream().allMatch(role -> role instanceof String)){
-                List<GrantedAuthority> authorityList = new ArrayList<>();
-                roleList.forEach(role -> {
-                    authorityList.add(new SimpleGrantedAuthority("ROLE_" + role));
-                });
-                return authorityList;
+                return roleList.stream()
+                           .map(role -> (String) role)
+                           .collect(Collectors.toList());
             }
-        }   
+        }
         throw new IllegalArgumentException();
     }
 
     private Claims extractAllClaims(String token) {
-        SecretKey Key = getSignInKey();
-        return Jwts.parserBuilder().setSigningKey(Key).build().parseClaimsJws(token).getBody();
+        return Jwts.parserBuilder().setSigningKey(getSignInKey()).build().parseClaimsJws(token).getBody();
     }
-
-    
-
 
 }
