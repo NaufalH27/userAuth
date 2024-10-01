@@ -28,7 +28,6 @@ public class UserRepositoryImpl implements UserRepository {
         entityManager.persist(user);
     }
 
-
     @Override
     @Transactional(readOnly = true)
     public Users findById(UUID id){

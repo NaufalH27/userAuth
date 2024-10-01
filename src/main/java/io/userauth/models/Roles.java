@@ -19,11 +19,4 @@ public class Roles {
     @Column(nullable = false)
     private String name;
 
-    public Roles(String name) {
-        this.name = name;
-    }
-
-    public Roles() {
-        
-    }
 }

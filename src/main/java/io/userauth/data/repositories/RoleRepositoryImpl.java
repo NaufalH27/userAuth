@@ -28,28 +28,15 @@ public class RoleRepositoryImpl implements RoleRepository{
 
     @Override
     @Transactional(readOnly = true)
-    public Roles getAdminRole() {
+    public Roles getRoleByName(String roleName) {
         final TypedQuery<Roles> query = entityManager.createQuery("SELECT u FROM Roles u WHERE u.name = :name", Roles.class);
-        return query.setParameter("name", "ADMIN").getResultList().stream().findFirst().orElse(null);
+        return query.setParameter("name",roleName).getResultList().stream().findFirst().orElse(null);
     }
 
     @Override
-    public Roles getUserRole() {
-        final TypedQuery<Roles> query = entityManager.createQuery("SELECT u FROM Roles u WHERE u.name = :name", Roles.class);
-        return query.setParameter("name", "USER").getResultList().stream().findFirst().orElse(null);
-    }
-
-    @Override
-    public Roles getOwnerRole() {
-        final TypedQuery<Roles> query = entityManager.createQuery("SELECT u FROM Roles u WHERE u.name = :name", Roles.class);
-        return query.setParameter("name", "OWNER").getResultList().stream().findFirst().orElse(null);
-    }
-
     @Transactional
-    @Override
-    public void initialRoles() {
-        entityManager.persist(new Roles("OWNER"));
-        entityManager.persist(new Roles("ADMIN"));
-        entityManager.persist(new Roles("USER"));
+    public void createRole(Roles role){
+        entityManager.persist(role);
     }
+
 }
