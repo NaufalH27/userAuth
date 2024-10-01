@@ -14,16 +14,16 @@ import io.userauth.models.Users;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository repository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository repository) {
-        this.repository = repository;
+    public UserServiceImpl(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     @Override
     public UserDTO getUserById(UUID id) {
-        Users user = repository.findById(id);
+        Users user = userRepository.findById(id);
         if (user == null){
             throw new IllegalArgumentException("user not found");
         }
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserByEmail(String email) {
-        Users user = repository.findByEmail(email);
+        Users user = userRepository.findByEmail(email);
         if (user == null){
             throw new IllegalArgumentException("user not found");
         }
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDTO getUserByName(String name) {
-        Users user = repository.findByName(name);
+        Users user = userRepository.findByName(name);
         if (user == null){
             throw new IllegalArgumentException("user not found");
         }
@@ -51,13 +51,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void updateEmail(int id, String newEmail) {
-        repository.updateEmail(id, newEmail);
+        userRepository.updateEmail(id, newEmail);
         
     }
 
     @Override
     public void deleteUser(int id) {
-        repository.deleteUser(id);
+        userRepository.deleteUser(id);
     }
 
     @Override

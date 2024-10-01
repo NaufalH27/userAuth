@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import io.userauth.common.PasswordUtils;
 import io.userauth.data.repositories.RoleRepository;
-import io.userauth.data.repositories.UserRepository;
 import io.userauth.dto.auth.UserCreationForm;
 import io.userauth.models.Roles;
 import io.userauth.models.Users;
@@ -25,8 +24,13 @@ public class RegistrationServiceImpl implements RegistrationService {
 
     @Override
     public void register(UserCreationForm creationForm) {
+        if (userService.existByEmail(creationForm.getEmail())){
 
-    
+        }
+        
+        if (userService.existByUsername(creationForm.getUsername())){
+            
+        }
 
         Users registeredUser = new Users();
         registeredUser.setUsername(creationForm.getUsername());
