@@ -1,12 +1,14 @@
 package io.userauth.service;
 
 import java.util.UUID;
+import java.util.Set;
+import java.util.HashSet;
 
-import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.userauth.common.PasswordUtils;
+import io.userauth.data.repositories.RoleRepository;
 import io.userauth.data.repositories.UserRepository;
 import io.userauth.dto.auth.UserCreationForm;
 import io.userauth.dto.user.UserDTO;
@@ -19,10 +21,12 @@ import io.userauth.models.Users;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
     }
     
     @Override
