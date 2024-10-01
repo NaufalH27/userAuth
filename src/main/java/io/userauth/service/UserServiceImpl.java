@@ -2,12 +2,16 @@ package io.userauth.service;
 
 import java.util.UUID;
 
+import org.hibernate.mapping.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import io.userauth.common.PasswordUtils;
 import io.userauth.data.repositories.UserRepository;
+import io.userauth.dto.auth.UserCreationForm;
 import io.userauth.dto.user.UserDTO;
 import io.userauth.mapper.UserDTOMapper;
+import io.userauth.models.Roles;
 import io.userauth.models.Users;
 
 
@@ -19,6 +23,27 @@ public class UserServiceImpl implements UserService {
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+    
+    @Override
+    public void createUser(UserCreationForm creationForm) {
+
+        if(userRepository.findByName(creationForm.getUsername()) != null){
+            throw new IllegalArgumentException("username already used");
+        }
+        if(userRepository.findByEmail(creationForm.getEmail()) != null){
+            throw new IllegalArgumentException("email already used");
+        }
+        Users registeredUser = new Users();
+        registeredUser.setUsername(creationForm.getUsername());
+        registeredUser.setEmail(creationForm.getEmail());
+        registeredUser.setPasswordHash(PasswordUtils.hashPassword(creationForm.getPassword()));
+        
+        Set<Roles> userRole = new HashSet<>();
+        userRole.add(roleRepository.getUserRole());
+        registeredUser.setRoles(userRole);
+
+        userRepository.createUser(registeredUser);
     }
 
     @Override
