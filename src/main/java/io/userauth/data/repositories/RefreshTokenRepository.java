@@ -1,4 +1,4 @@
-package io.userauth.dto.auth;
+package io.userauth.data.repositories;
 
 import io.userauth.models.RefreshToken;
 
