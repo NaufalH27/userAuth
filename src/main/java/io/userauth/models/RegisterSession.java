@@ -4,32 +4,27 @@ import org.hibernate.validator.constraints.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 
-// @Getter
-// @Setter
-// @Entity
-// @Table(name = "registrationSession", 
-//         uniqueConstraints = {
-//             @UniqueConstraint(columnNames = {"user_id"}),
-//         }
-// )
-// public class registerSessionEntity {
+@Getter
+@Setter
+@Entity
+@Table(name = "registration_session")
+public class RegisterSession {
     
+    @Id
+    @Column(name = "session_token")
+    private UUID sessionToken;
     
-//     @Id
-//     @GeneratedValue(strategy = GenerationType.UUID)
-//     @Column(name = "session_token")
-//     private UUID sessionToken;
-    
-//     @Column(name = "email")
-//     private String email;
-    
+    private String email;
 
-// }
+    @Size(max = 5)
+    private int OTP;
+
+    
+    
+}

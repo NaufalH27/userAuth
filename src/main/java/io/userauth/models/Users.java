@@ -30,13 +30,12 @@ public class Users {
     
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id")
     private UUID id;
     
-    @Column(name = "username", nullable=false)
+    @Column(nullable=false)
     private String username;
 
-    @Column(name = "email")
+    @Column(nullable=false)
     private String email;
 
     @Column(name = "password_hash", nullable=false)
