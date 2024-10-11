@@ -17,6 +17,11 @@ public class RoleRepositoryImpl implements RoleRepository{
     public RoleRepositoryImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
+
+    @Override
+    public Roles findRoleById(long id) {
+        return entityManager.find(Roles.class, id);
+    }
         
     @Override
     public List<Roles> getAllRoles() {
@@ -25,7 +30,7 @@ public class RoleRepositoryImpl implements RoleRepository{
     }
 
     @Override
-    public Roles getRoleByName(String roleName) {
+    public Roles findRoleByName(String roleName) {
         final TypedQuery<Roles> query = entityManager.createQuery("SELECT u FROM Roles u WHERE u.name = :name", Roles.class);
         return query.setParameter("name",roleName).getResultList().stream().findFirst().orElse(null);
     }
