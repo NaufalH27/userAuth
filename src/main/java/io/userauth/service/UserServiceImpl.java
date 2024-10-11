@@ -47,7 +47,7 @@ public class UserServiceImpl implements UserService {
         registeredUser.setPasswordHash(PasswordUtils.hashPassword(creationForm.getPassword()));
         
         Set<Roles> userRole = new HashSet<>();
-        userRole.add(roleRepository.getRoleByName(RoleName.USER));
+        userRole.add(roleRepository.findRoleByName(RoleName.USER));
         registeredUser.setRoles(userRole);
 
         userRepository.createUser(registeredUser);
