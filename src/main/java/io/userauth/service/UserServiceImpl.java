@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.userauth.common.PasswordUtils;
 import io.userauth.constant.RoleName;
@@ -80,15 +81,15 @@ public class UserServiceImpl implements UserService {
     
 
     @Override
+    @Transactional
     public void updateEmail(UUID id, String newEmail) {
-        userRepository.updateEmail(id, newEmail);
-        
+        Users user = userRepository.findById(id);
+        user.setEmail(newEmail);
     }
 
     @Override
     public void deleteUser(UUID id) {
         userRepository.deleteUser(id);
     }
-  
 
 }

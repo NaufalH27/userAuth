@@ -11,7 +11,6 @@ public interface UserRepository {
     public Users findByName(String name);
     public Users findByEmail(String email);
     public List<Users> getAllUsers();
-    public void updateEmail(UUID id, String newEmail);
     public void deleteUser(UUID id);
 
 }
