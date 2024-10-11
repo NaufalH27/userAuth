@@ -1,20 +1,30 @@
 package io.userauth.data.repositories;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Repository;
 
 import io.userauth.models.RefreshToken;
+import jakarta.persistence.EntityManager;
 
 @Repository
 public class RefreshTokenRepositoryImpl implements RefreshTokenRepository{
 
-    @Override
-    public void addToken(RefreshToken refreshToken) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    private final EntityManager entityManager;
+
+    public RefreshTokenRepositoryImpl(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
     @Override
-    public void revokeToken(RefreshToken refreshToken) {
-        throw new UnsupportedOperationException("Not supported yet.");
+    public void addToken(RefreshToken refreshToken) {
+        entityManager.persist(refreshToken);
     }
+
+    @Override
+    public RefreshToken findTokenById(UUID id) {
+        return entityManager.find(RefreshToken.class, id);
+    }
+
     
 }

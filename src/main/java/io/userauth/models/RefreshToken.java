@@ -24,8 +24,11 @@ public class RefreshToken {
     UUID token;
     
     @Column(nullable=false)
-    UUID jit; 
+    UUID userId; 
 
-    Boolean isBlocked = false;
+    Boolean isRevoked = false;
+
+    
+
 
 }

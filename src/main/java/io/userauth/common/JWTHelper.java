@@ -38,9 +38,6 @@ public class JWTHelper {
                 .compact();
     }
 
-    public String generateRefreshToken(){
-        return UUID.randomUUID().toString();
-    }
 
     private SecretKey getSignInKey() {
         byte[] keyBytes = Decoders.BASE64.decode(this.secretKey); 
