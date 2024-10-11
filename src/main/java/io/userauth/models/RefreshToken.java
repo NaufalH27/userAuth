@@ -15,8 +15,7 @@ import lombok.Setter;
 @Entity
 @Table(name = "refresh_token", 
         uniqueConstraints = {
-            @UniqueConstraint(columnNames = {"username"}),
-            @UniqueConstraint(columnNames = {"email"}),
+            @UniqueConstraint(columnNames = {"token"}),
         })
 public class RefreshToken {
 
