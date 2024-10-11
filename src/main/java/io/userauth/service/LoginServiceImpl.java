@@ -10,7 +10,6 @@ import io.userauth.common.JWTHelper;
 import io.userauth.constant.CookieName;
 import io.userauth.constant.JWTClaimName;
 import io.userauth.dto.auth.AuthenticatedUser;
-import io.userauth.models.RefreshToken;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Service

@@ -21,9 +21,8 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Override
     @Transactional
-    public RefreshToken revokeToken(UUID token) {
+    public void revokeToken(UUID token) {
         RefreshToken refreshToken = refreshTokenRepository.findTokenById(token);
         refreshToken.setIsRevoked(true);
-        return refreshToken;
     }
 }
