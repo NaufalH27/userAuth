@@ -32,6 +32,7 @@ public class UserServiceImpl implements UserService {
     }
     
     @Override
+    @Transactional
     public void createUser(UserCreationForm creationForm) {
 
         if(userRepository.findByName(creationForm.getUsername()) != null){
@@ -53,6 +54,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDTO getUserById(UUID id) {
         Users user = userRepository.findById(id);
         if (user == null){
@@ -62,6 +64,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDTO getUserByEmail(String email) {
         Users user = userRepository.findByEmail(email);
         if (user == null){
@@ -71,6 +74,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public UserDTO getUserByName(String name) {
         Users user = userRepository.findByName(name);
         if (user == null){
@@ -88,6 +92,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void deleteUser(UUID id) {
         userRepository.deleteUser(id);
     }
