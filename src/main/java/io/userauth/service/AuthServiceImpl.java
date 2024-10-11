@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import io.userauth.data.repositories.UserRepository;
 import io.userauth.dto.auth.AuthenticatedUser;
+import io.userauth.dto.auth.ILoginForm;
 
 
 @Service
@@ -18,7 +19,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public AuthenticatedUser getAuthenticatedUser(AuthStrategyType type, Object loginForm){
+    public AuthenticatedUser getAuthenticatedUser(AuthStrategyType type, ILoginForm loginForm){
         return createAuthStrategy(type).getAuthentication(loginForm);
     }
     

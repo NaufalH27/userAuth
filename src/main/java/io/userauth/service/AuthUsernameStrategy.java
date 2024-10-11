@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import io.userauth.common.PasswordUtils;
 import io.userauth.data.repositories.UserRepository;
 import io.userauth.dto.auth.AuthenticatedUser;
-import io.userauth.dto.auth.UsernameLoginForm;
+import io.userauth.dto.auth.ILoginForm;
 import io.userauth.mapper.AuthenticatedUserMapper;
 import io.userauth.models.Users;
 
@@ -19,14 +19,13 @@ public class AuthUsernameStrategy implements AuthStrategy {
     }
 
     @Override
-    public AuthenticatedUser getAuthentication(Object loginForm) {
-        UsernameLoginForm form = (UsernameLoginForm) loginForm;
-        Users entity = userRepository.findByName(form.getUsername());
+    public AuthenticatedUser getAuthentication(ILoginForm loginForm) {
+        Users entity = userRepository.findByName(loginForm.getIdentifier());
 
         if (entity == null){
             throw new IllegalArgumentException("user not found");
         }
-        if (!PasswordUtils.verifyPassword(form.getPassword(), entity.getPasswordHash())){
+        if (!PasswordUtils.verifyPassword(loginForm.getPassword(), entity.getPasswordHash())){
             throw new IllegalArgumentException("email password");
         }
 
