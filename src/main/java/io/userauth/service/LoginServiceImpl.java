@@ -18,20 +18,21 @@ import jakarta.servlet.http.HttpServletResponse;
 @Service
 public class LoginServiceImpl implements LoginService {
 
-    private final AuthService authService;
+    private final AuthStrategyFactory authStrategyFactory;
     private final JWTHelper jwtHelper;
     private final RefreshTokenService refreshTokenService;
 
     @Autowired
-    public LoginServiceImpl(AuthService authService, JWTHelper jwtHelper,RefreshTokenService refreshTokenService) {
-        this.authService = authService;
+    public LoginServiceImpl(AuthStrategyFactory authStrategyFactory, JWTHelper jwtHelper,RefreshTokenService refreshTokenService) {
+        this.authStrategyFactory = authStrategyFactory;
         this.jwtHelper = jwtHelper;
         this.refreshTokenService = refreshTokenService;
     }
 
     @Override
     public void login(AuthStrategyType type, ILoginForm loginForm, HttpServletResponse response) {
-        AuthenticatedUser authenticatedUser = authService.getAuthenticatedUser(type, loginForm);
+        AuthStrategy authStrategy = authStrategyFactory.createAuthStrategy(type);
+        AuthenticatedUser authenticatedUser = authStrategy.getAuthentication(loginForm);
         String accessToken = generateAccessToken(authenticatedUser);
         UUID refreshToken = refreshTokenService.generateToken(authenticatedUser.getId());
         CookieUtils.sendCookies(response, CookieName.ACCESS_TOKEN, accessToken);

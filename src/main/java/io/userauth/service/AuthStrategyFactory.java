@@ -4,26 +4,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.userauth.data.repositories.UserRepository;
-import io.userauth.dto.auth.AuthenticatedUser;
-import io.userauth.dto.auth.ILoginForm;
-
 
 @Service
-public class AuthServiceImpl implements AuthService {
+public class AuthStrategyFactory {
 
     private final UserRepository userRepository;
 
     @Autowired
-    public AuthServiceImpl(UserRepository userRepository){
+    public AuthStrategyFactory(UserRepository userRepository){
         this.userRepository = userRepository;
     }
-
-    @Override
-    public AuthenticatedUser getAuthenticatedUser(AuthStrategyType type, ILoginForm loginForm){
-        return createAuthStrategy(type).getAuthentication(loginForm);
-    }
     
-    private AuthStrategy createAuthStrategy(AuthStrategyType type) {
+    public AuthStrategy createAuthStrategy(AuthStrategyType type) {
         return switch (type) {
             case USERNAME -> new AuthUsernameStrategy(userRepository);
             case EMAIL -> new AuthEmailStrategy(userRepository);
