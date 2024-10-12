@@ -4,5 +4,5 @@ import java.util.UUID;
 
 public interface RefreshTokenService {
     public void revokeToken(UUID token);
-    public String generateToken(UUID userIdIssuer);
+    public UUID generateToken(UUID userIdIssuer);
 }

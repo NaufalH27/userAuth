@@ -19,12 +19,12 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Override
     @Transactional
-    public String generateToken(UUID userIdIssuer) {
+    public UUID generateToken(UUID userIdIssuer) {
         RefreshToken newRefreshToken =  new RefreshToken();
         newRefreshToken.setToken(UUID.randomUUID());
         newRefreshToken.setUserId(userIdIssuer);
         refreshTokenRepository.addToken(newRefreshToken);
-        return newRefreshToken.getToken().toString();
+        return newRefreshToken.getToken();
     }
 
     @Override

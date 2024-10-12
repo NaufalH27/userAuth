@@ -2,6 +2,7 @@ package io.userauth.service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,9 +33,9 @@ public class LoginServiceImpl implements LoginService {
     public void login(AuthStrategyType type, ILoginForm loginForm, HttpServletResponse response) {
         AuthenticatedUser authenticatedUser = authService.getAuthenticatedUser(type, loginForm);
         String accessToken = generateAccessToken(authenticatedUser);
-        String refreshToken = refreshTokenService.generateToken(authenticatedUser.getId());
+        UUID refreshToken = refreshTokenService.generateToken(authenticatedUser.getId());
         CookieUtils.sendCookies(response, CookieName.ACCESS_TOKEN, accessToken);
-        CookieUtils.sendCookies(response, CookieName.REFRESH_TOKEN, refreshToken);
+        CookieUtils.sendCookies(response, CookieName.REFRESH_TOKEN, refreshToken.toString());
     }
 
     private String generateAccessToken(AuthenticatedUser user) {
