@@ -22,7 +22,7 @@ public class LoginServiceImpl implements LoginService {
     private final RefreshTokenService refreshTokenService;
 
     @Autowired
-    public LoginServiceImpl(AuthService authService, JWTHelper jwtHelper, io.userauth.service.RefreshTokenService refreshTokenService) {
+    public LoginServiceImpl(AuthService authService, JWTHelper jwtHelper,RefreshTokenService refreshTokenService) {
         this.authService = authService;
         this.jwtHelper = jwtHelper;
         this.refreshTokenService = refreshTokenService;

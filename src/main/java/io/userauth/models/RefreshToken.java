@@ -4,8 +4,8 @@ import java.util.UUID;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,13 +13,10 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "refresh_token", 
-        uniqueConstraints = {
-            @UniqueConstraint(columnNames = {"token"}),
-        })
+@Table(name = "refresh_token")
 public class RefreshToken {
 
-    @Column(nullable=false)
+    @Id
     UUID token;
     
     @Column(nullable=false)
