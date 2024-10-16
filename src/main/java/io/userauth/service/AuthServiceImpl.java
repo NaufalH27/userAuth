@@ -16,6 +16,7 @@ import io.userauth.dto.auth.ILoginForm;
 import io.userauth.service.AuthStrategy.AuthStrategy;
 import io.userauth.service.AuthStrategy.AuthStrategyFactory;
 import io.userauth.service.AuthStrategy.AuthStrategyType;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 
@@ -39,14 +40,16 @@ public class AuthServiceImpl implements AutheService {
         AuthenticatedUser authenticatedUser = authStrategy.getAuthentication(loginForm);
         String accessToken = generateAccessToken(authenticatedUser);
         UUID refreshToken = refreshTokenService.generateToken(authenticatedUser.getId());
-        CookieUtils.sendCookies(response, CookieName.ACCESS_TOKEN, accessToken);
-        CookieUtils.sendCookies(response, CookieName.REFRESH_TOKEN, refreshToken.toString());
+        CookieUtils.sendCookie(response, CookieName.ACCESS_TOKEN, accessToken);
+        CookieUtils.sendCookie(response, CookieName.REFRESH_TOKEN, refreshToken.toString());
     }
 
     @Override
     @Transactional
-    public void logout(HttpServletResponse response) {
-        //TODO : toggle refresh token revokation then remove refreshToken cookies
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        String refreshToken = CookieUtils.getCookieValue(request, CookieName.REFRESH_TOKEN);
+        refreshTokenService.revokeToken(UUID.fromString(refreshToken));
+        CookieUtils.eraseCookie(CookieName.REFRESH_TOKEN, response);
     }
 
     private String generateAccessToken(AuthenticatedUser user) {
