@@ -33,4 +33,11 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         RefreshToken refreshToken = refreshTokenRepository.findTokenById(token);
         refreshToken.setIsRevoked(true);
     }
+
+    @Override
+    public UUID getUserIdIssuer(UUID token) {
+        RefreshToken refreshToken = refreshTokenRepository.findTokenById(token);
+        //TODO : check expiration and revokation
+        return refreshToken.getUserId();
+    }
 }

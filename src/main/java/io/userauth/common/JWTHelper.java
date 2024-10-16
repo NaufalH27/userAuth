@@ -1,6 +1,7 @@
 package io.userauth.common;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -17,6 +18,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.userauth.constant.JWTClaimName;
+import io.userauth.dto.auth.AuthenticatedUser;
 
 @Service
 public class JWTHelper {
@@ -27,7 +29,16 @@ public class JWTHelper {
     @Value("${jwt.expiration}")
     private long expirationTime;
 
-    public String buildAccessToken(Map<String, Object> claims, String subject) {
+    public String generateAccessToken(AuthenticatedUser user) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put(JWTClaimName.ID, user.getId().toString());
+        claims.put(JWTClaimName.EMAIL, user.getEmail());
+        claims.put(JWTClaimName.ROLES, user.getRole());
+        String subject = user.getUsername();
+        return buildAccessToken(claims, subject);
+    }
+
+    private String buildAccessToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
                 .setIssuer(JWTClaimName.ISSUER)
                 .setClaims(claims)

@@ -19,6 +19,7 @@ import io.userauth.common.JWTHelper;
 import io.userauth.constant.CookieName;
 import io.userauth.dto.auth.CustomUserDetails;
 import io.userauth.mapper.RoleAuthorityMapper;
+import io.userauth.service.TokenRegenarationService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -27,11 +28,12 @@ import jakarta.servlet.http.HttpServletResponse;
 @Component
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    
     private final JWTHelper jwtHelper;
+    private final TokenRegenarationService tokenRegenarationService;
 
-    public JwtTokenFilter(JWTHelper jwtHelper) {
+    public JwtTokenFilter(JWTHelper jwtHelper, TokenRegenarationService tokenRegenarationService) {
         this.jwtHelper = jwtHelper;
+        this.tokenRegenarationService = tokenRegenarationService;
     }
 
     @Override
@@ -42,7 +44,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         ) throws ServletException, IOException {
 
         String path = request.getRequestURI();
-        if (path.startsWith("/signup") || path.startsWith("/login") || path.startsWith("/logout")) {
+        if (path.startsWith("/signup") || path.startsWith("/login")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -70,18 +72,16 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
 
         } catch (ExpiredJwtException e) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("JWT Token is expired");
+            //TODO : catch refreshTokenException and send status unauthorized
+            UUID refreshToken = UUID.fromString(CookieUtils.getCookieValue(request, CookieName.REFRESH_TOKEN));
+            tokenRegenarationService.regenerateNewToken(refreshToken, response);
         } catch (JwtException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Invalid JWT Token");
         } catch (IllegalArgumentException e){
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.getWriter().write("illegal jwt Token");
-        } catch (ServletException | IOException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().write("Internal Server Error");
-        } 
+        }
     } 
 
  

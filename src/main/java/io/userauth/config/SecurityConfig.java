@@ -11,16 +11,19 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import io.userauth.common.JWTHelper;
 import io.userauth.presentation.middleware.JwtTokenFilter;
+import io.userauth.service.TokenRegenarationService;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
     private final JWTHelper jwtHelper;
+    private final TokenRegenarationService tokenRegenarationService;
 
     @Autowired
-    public SecurityConfig(JWTHelper jwtHelper) {
+    public SecurityConfig(JWTHelper jwtHelper, TokenRegenarationService tokenRegenarationService) {
         this.jwtHelper = jwtHelper;
+        this.tokenRegenarationService = tokenRegenarationService;
     }
 
     @Bean
@@ -29,7 +32,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth 
                 .anyRequest().authenticated() 
-            ).addFilterBefore(new JwtTokenFilter(this.jwtHelper), BasicAuthenticationFilter.class);
+            ).addFilterBefore(new JwtTokenFilter(this.jwtHelper, this.tokenRegenarationService), BasicAuthenticationFilter.class);
             return http.build();
     }
 
