@@ -1,5 +1,6 @@
 package io.userauth.models;
 
+import java.util.Date;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -24,7 +25,10 @@ public class RefreshToken {
 
     Boolean isRevoked = false;
 
+    @Column(nullable=false)
+    Date issuedAt;
+
+    @Column(nullable=false)
+    Date expiredAt;
     
-
-
 }

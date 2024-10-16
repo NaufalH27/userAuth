@@ -9,17 +9,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import io.userauth.dto.auth.EmailLoginForm;
 import io.userauth.dto.auth.UsernameLoginForm;
-import io.userauth.service.AuthStrategyType;
-import io.userauth.service.LoginService;
+import io.userauth.service.AutheService;
+import io.userauth.service.AuthStrategy.AuthStrategyType;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping(value = "/login")
 public class LoginController {
 
-    private final LoginService loginService;
+    private final AutheService loginService;
 
-    public LoginController(io.userauth.service.LoginService loginService) {
+    public LoginController(io.userauth.service.AutheService loginService) {
         this.loginService = loginService;
     }    
     

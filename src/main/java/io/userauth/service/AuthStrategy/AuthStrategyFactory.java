@@ -1,4 +1,4 @@
-package io.userauth.service;
+package io.userauth.service.AuthStrategy;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

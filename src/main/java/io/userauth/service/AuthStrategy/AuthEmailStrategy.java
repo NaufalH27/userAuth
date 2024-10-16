@@ -1,4 +1,4 @@
-package io.userauth.service;
+package io.userauth.service.AuthStrategy;
 
 
 

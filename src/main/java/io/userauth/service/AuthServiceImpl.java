@@ -13,17 +13,21 @@ import io.userauth.constant.CookieName;
 import io.userauth.constant.JWTClaimName;
 import io.userauth.dto.auth.AuthenticatedUser;
 import io.userauth.dto.auth.ILoginForm;
+import io.userauth.service.AuthStrategy.AuthStrategy;
+import io.userauth.service.AuthStrategy.AuthStrategyFactory;
+import io.userauth.service.AuthStrategy.AuthStrategyType;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 
 @Service
-public class LoginServiceImpl implements LoginService {
+public class AuthServiceImpl implements AutheService {
 
     private final AuthStrategyFactory authStrategyFactory;
     private final JWTHelper jwtHelper;
     private final RefreshTokenService refreshTokenService;
 
     @Autowired
-    public LoginServiceImpl(AuthStrategyFactory authStrategyFactory, JWTHelper jwtHelper,RefreshTokenService refreshTokenService) {
+    public AuthServiceImpl(AuthStrategyFactory authStrategyFactory, JWTHelper jwtHelper,RefreshTokenService refreshTokenService) {
         this.authStrategyFactory = authStrategyFactory;
         this.jwtHelper = jwtHelper;
         this.refreshTokenService = refreshTokenService;
@@ -37,6 +41,12 @@ public class LoginServiceImpl implements LoginService {
         UUID refreshToken = refreshTokenService.generateToken(authenticatedUser.getId());
         CookieUtils.sendCookies(response, CookieName.ACCESS_TOKEN, accessToken);
         CookieUtils.sendCookies(response, CookieName.REFRESH_TOKEN, refreshToken.toString());
+    }
+
+    @Override
+    @Transactional
+    public void logout(HttpServletResponse response) {
+        //TODO : toggle refresh token revokation then remove refreshToken cookies
     }
 
     private String generateAccessToken(AuthenticatedUser user) {
