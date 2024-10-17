@@ -58,14 +58,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
 
         try {
-            String subject = jwtHelper.getSubject(accessToken);
-            UUID userId = jwtHelper.getId(accessToken);
-            List<GrantedAuthority> userRoles = RoleAuthorityMapper.toAuthorities(jwtHelper.getRoleList(accessToken));
-            UserDetails user = new CustomUserDetails(subject, userId,userRoles);
-                                    
-            UsernamePasswordAuthenticationToken authentication =
-                    new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-
+            UsernamePasswordAuthenticationToken authentication = convertAccessTokenToUserDetails(accessToken);
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));    
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -84,5 +77,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
     } 
 
+    private UsernamePasswordAuthenticationToken convertAccessTokenToUserDetails(String accessToken) {
+        String subject = jwtHelper.getSubject(accessToken);
+        UUID userId = jwtHelper.getId(accessToken);
+        List<GrantedAuthority> userRoles = RoleAuthorityMapper.toAuthorities(jwtHelper.getRoleList(accessToken));
+        UserDetails user = new CustomUserDetails(subject, userId,userRoles);
+                                
+        return new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+    }
  
 }
