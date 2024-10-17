@@ -8,11 +8,11 @@ import io.userauth.models.RefreshToken;
 import jakarta.persistence.EntityManager;
 
 @Repository
-public class RefreshTokenRepositoryPostgreImpl implements RefreshTokenRepository{
+public class RefreshTokenRepositoryImpl implements RefreshTokenRepository{
 
     private final EntityManager entityManager;
 
-    public RefreshTokenRepositoryPostgreImpl(EntityManager entityManager) {
+    public RefreshTokenRepositoryImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
