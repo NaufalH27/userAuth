@@ -8,8 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import io.userauth.data.repositories.RefreshTokenRepository;
-import io.userauth.models.RefreshToken;
+import io.userauth.data.session.models.RefreshToken;
+import io.userauth.data.session.repositories.RefreshTokenRepository;
 import jakarta.transaction.Transactional;
 
 @SpringBootTest

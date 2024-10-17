@@ -1,11 +1,11 @@
-package io.userauth.data.repositories;
+package io.userauth.data.primary.repositories;
 
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
-import io.userauth.models.Users;
+import io.userauth.data.primary.models.Users;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;

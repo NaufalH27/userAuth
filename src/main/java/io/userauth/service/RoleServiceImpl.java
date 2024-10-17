@@ -3,8 +3,8 @@ package io.userauth.service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import io.userauth.data.repositories.RoleRepository;
-import io.userauth.models.Roles;
+import io.userauth.data.primary.models.Roles;
+import io.userauth.data.primary.repositories.RoleRepository;
 
 
 @Service

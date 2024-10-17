@@ -1,9 +1,9 @@
-package io.userauth.data.repositories;
+package io.userauth.data.primary.repositories;
 
 import java.util.List;
 import java.util.UUID;
 
-import io.userauth.models.Users;
+import io.userauth.data.primary.models.Users;
 
 public interface UserRepository {
     public Users findById(UUID id);

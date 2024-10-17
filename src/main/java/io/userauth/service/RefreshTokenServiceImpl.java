@@ -7,8 +7,8 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import io.userauth.data.repositories.RefreshTokenRepository;
-import io.userauth.models.RefreshToken;
+import io.userauth.data.session.models.RefreshToken;
+import io.userauth.data.session.repositories.RefreshTokenRepository;
 import jakarta.transaction.Transactional;
 
 @Service

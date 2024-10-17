@@ -3,7 +3,7 @@ package io.userauth.service.AuthStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import io.userauth.data.repositories.UserRepository;
+import io.userauth.data.primary.repositories.UserRepository;
 
 @Service
 public class AuthStrategyFactory {

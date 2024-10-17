@@ -1,8 +1,8 @@
-package io.userauth.data.repositories;
+package io.userauth.data.primary.repositories;
 
 import java.util.List;
 
-import io.userauth.models.Roles;
+import io.userauth.data.primary.models.Roles;
 
 public interface RoleRepository {
     public Roles findRoleById(long id);

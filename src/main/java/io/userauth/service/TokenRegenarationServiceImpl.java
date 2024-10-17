@@ -8,10 +8,10 @@ import org.springframework.stereotype.Service;
 import io.userauth.common.CookieUtils;
 import io.userauth.common.JWTHelper;
 import io.userauth.constant.CookieName;
-import io.userauth.data.repositories.UserRepository;
+import io.userauth.data.primary.models.Users;
+import io.userauth.data.primary.repositories.UserRepository;
 import io.userauth.dto.auth.AuthenticatedUser;
 import io.userauth.mapper.AuthenticatedUserMapper;
-import io.userauth.models.Users;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;
 
@@ -23,7 +23,7 @@ public class TokenRegenarationServiceImpl implements TokenRegenarationService {
     private final JWTHelper jwtHelper;
 
     @Autowired
-    public TokenRegenarationServiceImpl(RefreshTokenService refreshTokenService, JWTHelper jwtHelper, io.userauth.data.repositories.UserRepository userRepository) {
+    public TokenRegenarationServiceImpl(RefreshTokenService refreshTokenService, JWTHelper jwtHelper, io.userauth.data.primary.repositories.UserRepository userRepository) {
         this.refreshTokenService = refreshTokenService;
         this.jwtHelper = jwtHelper;
         this.userRepository = userRepository;

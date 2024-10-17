@@ -1,10 +1,10 @@
-package io.userauth.data.repositories;
+package io.userauth.data.session.repositories;
 
 import java.util.UUID;
 
 import org.springframework.stereotype.Repository;
 
-import io.userauth.models.RefreshToken;
+import io.userauth.data.session.models.RefreshToken;
 import jakarta.persistence.EntityManager;
 
 @Repository

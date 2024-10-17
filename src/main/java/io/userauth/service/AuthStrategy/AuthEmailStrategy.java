@@ -5,11 +5,11 @@ package io.userauth.service.AuthStrategy;
 import org.springframework.stereotype.Service;
 
 import io.userauth.common.PasswordUtils;
-import io.userauth.data.repositories.UserRepository;
+import io.userauth.data.primary.models.Users;
+import io.userauth.data.primary.repositories.UserRepository;
 import io.userauth.dto.auth.AuthenticatedUser;
 import io.userauth.dto.auth.ILoginForm;
 import io.userauth.mapper.AuthenticatedUserMapper;
-import io.userauth.models.Users;
 
 @Service
 public class AuthEmailStrategy implements AuthStrategy{

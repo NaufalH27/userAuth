@@ -1,16 +1,16 @@
-package io.userauth.data.repositories;
+package io.userauth.data.primary.repositories;
 
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import io.userauth.models.Roles;
+import io.userauth.data.primary.models.Roles;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 
 
 @Repository
-public class RoleRepositoryImpl implements RoleRepository{
+public class RoleRepositoryImpl implements RoleRepository {
 
     private final EntityManager entityManager;
 

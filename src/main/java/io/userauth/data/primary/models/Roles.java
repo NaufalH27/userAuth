@@ -1,4 +1,4 @@
-package io.userauth.models;
+package io.userauth.data.primary.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

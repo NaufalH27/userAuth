@@ -10,13 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import io.userauth.common.PasswordUtils;
 import io.userauth.constant.RoleName;
-import io.userauth.data.repositories.RoleRepository;
-import io.userauth.data.repositories.UserRepository;
+import io.userauth.data.primary.models.Roles;
+import io.userauth.data.primary.models.Users;
+import io.userauth.data.primary.repositories.RoleRepository;
+import io.userauth.data.primary.repositories.UserRepository;
 import io.userauth.dto.auth.UserCreationForm;
 import io.userauth.dto.user.UserDTO;
 import io.userauth.mapper.UserDTOMapper;
-import io.userauth.models.Roles;
-import io.userauth.models.Users;
 
 
 @Service

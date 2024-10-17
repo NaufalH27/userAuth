@@ -1,4 +1,4 @@
-package io.userauth.models;
+package io.userauth.data.primary.models;
 
 import java.util.Set;
 import java.util.UUID;

@@ -3,9 +3,9 @@ package io.userauth.mapper;
 
 import java.util.stream.Collectors;
 
+import io.userauth.data.primary.models.Roles;
+import io.userauth.data.primary.models.Users;
 import io.userauth.dto.auth.AuthenticatedUser;
-import io.userauth.models.Roles;
-import io.userauth.models.Users;
 
 public class AuthenticatedUserMapper {
 
