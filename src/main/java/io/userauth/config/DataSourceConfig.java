@@ -13,16 +13,16 @@ import org.springframework.context.annotation.Primary;
 public class DataSourceConfig {
     
     @Primary
-    @Bean(name = "mainDatabase")
-    @ConfigurationProperties(prefix="spring.datasource.main")
+    @Bean(name = "primaryDatabase")
+    @ConfigurationProperties(prefix="spring.datasource.primary")
     public DataSource mainDatabase() {
         return DataSourceBuilder.create().build();
     }
 
 
-    @Bean(name = "authSessionDatabase")
+    @Bean(name = "sessionDatabase")
     @ConfigurationProperties(prefix="spring.datasource.session")
-    public DataSource authSessionDatabase() {
+    public DataSource sessionDatabase() {
         return DataSourceBuilder.create().build();
     }
 
