@@ -28,7 +28,7 @@ public class AuthEmailStrategy implements AuthStrategy{
             throw new IllegalArgumentException("user not found");
         }
         if (!PasswordUtils.verifyPassword(loginForm.getPassword(), entity.getPasswordHash())){
-            throw new IllegalArgumentException("email password");
+            throw new IllegalArgumentException("wrong password");
         }
         
         return AuthenticatedUserMapper.toDTO(entity);
