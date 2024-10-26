@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import io.userauth.constant.TokenStatus;
 import io.userauth.data.repositories.RefreshTokenRepository;
 import io.userauth.models.RefreshToken;
 import jakarta.transaction.Transactional;
@@ -43,13 +44,12 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     @Transactional
     public void revokeToken(UUID token) {
         RefreshToken refreshToken = refreshTokenRepository.findTokenById(token);
-        refreshToken.setIsRevoked(true);
+        refreshToken.setStatus(TokenStatus.REVOKED);
     }
 
     @Override
     public UUID getUserIdIssuer(UUID token) {
         RefreshToken refreshToken = refreshTokenRepository.findTokenById(token);
-        //TODO : check expiration and revokation
         return refreshToken.getUserId();
     }
 
