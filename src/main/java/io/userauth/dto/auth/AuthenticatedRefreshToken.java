@@ -1,9 +1,10 @@
 package io.userauth.dto.auth;
 
-import org.hibernate.validator.constraints.UUID;
+import java.util.Date;
+import java.util.UUID;
 
-import lombok.Setter;
 import lombok.Getter;
+import lombok.Setter;
 
 @Setter
 @Getter
