@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import io.userauth.data.repositories.RefreshTokenRepository;
 import io.userauth.data.repositories.UserRepository;
-import io.userauth.dto.auth.ILoginForm;
 
 @Service
 public class AuthStrategyFactory {
@@ -19,7 +18,7 @@ public class AuthStrategyFactory {
         this.refreshTokenRepository = refreshTokenRepository;
     }
     
-    public AuthStrategy<? extends ILoginForm> createAuthStrategy(AuthStrategyType type) {
+    public AuthStrategy createAuthStrategy(AuthStrategyType type) {
         return switch (type) {
             case USERNAME -> new AuthUsernameStrategy(userRepository);
             case EMAIL -> new AuthEmailStrategy(userRepository);

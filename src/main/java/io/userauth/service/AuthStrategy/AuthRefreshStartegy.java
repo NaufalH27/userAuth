@@ -1,17 +1,17 @@
 package io.userauth.service.AuthStrategy;
 
 import java.util.Date;
+import java.util.UUID;
 
 import io.userauth.constant.TokenStatus;
 import io.userauth.data.repositories.RefreshTokenRepository;
 import io.userauth.data.repositories.UserRepository;
 import io.userauth.dto.auth.AuthenticatedUser;
-import io.userauth.dto.auth.RefreshTokenForm;
 import io.userauth.mapper.AuthenticatedUserMapper;
 import io.userauth.models.RefreshToken;
 import io.userauth.models.Users;
 
-public class AuthRefreshStartegy implements AuthStrategy<RefreshTokenForm> {
+public class AuthRefreshStartegy implements AuthStrategy<UUID> {
 
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -22,8 +22,8 @@ public class AuthRefreshStartegy implements AuthStrategy<RefreshTokenForm> {
     }
 
     @Override
-    public AuthenticatedUser getAuthentication(RefreshTokenForm loginForm) {
-        RefreshToken refreshToken = refreshTokenRepository.findTokenById(loginForm.getTokenId());
+    public AuthenticatedUser getAuthentication(UUID tokenId) {
+        RefreshToken refreshToken = refreshTokenRepository.findTokenById(tokenId);
 
         if (refreshToken == null) {
             throw new IllegalArgumentException("Token not found");
