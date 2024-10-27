@@ -11,7 +11,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import io.userauth.common.JWTHelper;
 import io.userauth.presentation.middleware.JwtTokenFilter;
-import io.userauth.service.auth.AuthService;
+import io.userauth.service.AuthService;
 
 @Configuration
 @EnableWebSecurity
@@ -32,9 +32,7 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth 
                 .anyRequest().authenticated() 
-            ).addFilterBefore(new JwtTokenFilter(this.jwtHelper, 
-                                                this.authService
-                                                ), BasicAuthenticationFilter.class);
+            ).addFilterBefore(new JwtTokenFilter(this.jwtHelper, this.authService), BasicAuthenticationFilter.class);
             return http.build();
     }
 

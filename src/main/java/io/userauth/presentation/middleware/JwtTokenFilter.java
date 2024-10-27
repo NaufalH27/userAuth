@@ -20,7 +20,7 @@ import io.userauth.constant.CookieName;
 import io.userauth.dto.auth.CustomUserDetails;
 import io.userauth.dto.auth.RefreshTokenForm;
 import io.userauth.mapper.RoleAuthorityMapper;
-import io.userauth.service.auth.AuthService;
+import io.userauth.service.AuthService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,4 +1,4 @@
-package io.userauth.service.auth;
+package io.userauth.service;
 
 import java.util.UUID;
 
@@ -10,7 +10,8 @@ import io.userauth.common.JWTHelper;
 import io.userauth.constant.CookieName;
 import io.userauth.dto.auth.AuthForm;
 import io.userauth.dto.auth.AuthenticatedUser;
-import io.userauth.service.RefreshTokenService;
+import io.userauth.service.auth.AuthStrategy;
+import io.userauth.service.auth.AuthStrategyFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.transaction.Transactional;

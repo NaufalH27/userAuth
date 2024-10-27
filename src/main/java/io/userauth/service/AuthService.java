@@ -1,4 +1,4 @@
-package io.userauth.service.auth;
+package io.userauth.service;
 
 import io.userauth.dto.auth.AuthForm;
 import jakarta.servlet.http.HttpServletRequest;

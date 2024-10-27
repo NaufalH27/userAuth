@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import io.userauth.dto.auth.EmailLoginForm;
 import io.userauth.dto.auth.UsernameLoginForm;
-import io.userauth.service.auth.AuthService;
+import io.userauth.service.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller

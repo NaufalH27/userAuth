@@ -46,6 +46,12 @@ public class AuthRefreshStrategy implements AuthStrategy {
         }
         
         Users authenticatedUser = userRepository.findById(refreshToken.getUserId());
+
+        if(authenticatedUser == null) {
+            throw new IllegalArgumentException("User not Found");
+        }
+
+        refreshToken.setStatus(TokenStatus.USED);
         return AuthenticatedUserMapper.toDTO(authenticatedUser);
     }
     
