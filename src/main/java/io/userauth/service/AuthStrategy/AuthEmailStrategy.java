@@ -7,12 +7,12 @@ import org.springframework.stereotype.Service;
 import io.userauth.common.PasswordUtils;
 import io.userauth.data.repositories.UserRepository;
 import io.userauth.dto.auth.AuthenticatedUser;
-import io.userauth.dto.auth.ILoginForm;
+import io.userauth.dto.auth.EmailLoginForm;
 import io.userauth.mapper.AuthenticatedUserMapper;
 import io.userauth.models.Users;
 
 @Service
-public class AuthEmailStrategy implements AuthStrategy{
+public class AuthEmailStrategy implements AuthStrategy<EmailLoginForm> {
     
     private final UserRepository userRepository;
 
@@ -21,8 +21,8 @@ public class AuthEmailStrategy implements AuthStrategy{
     }
 
     @Override
-    public AuthenticatedUser getAuthentication(ILoginForm loginForm) {
-        Users entity = userRepository.findByEmail(loginForm.getIdentifier());
+    public AuthenticatedUser getAuthentication(EmailLoginForm loginForm) {
+        Users entity = userRepository.findByEmail(loginForm.getEmail());
 
         if (entity == null){
             throw new IllegalArgumentException("user not found");

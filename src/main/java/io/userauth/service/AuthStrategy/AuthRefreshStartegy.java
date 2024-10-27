@@ -1,13 +1,17 @@
 package io.userauth.service.AuthStrategy;
 
+import java.util.Date;
+
 import io.userauth.constant.TokenStatus;
 import io.userauth.data.repositories.RefreshTokenRepository;
 import io.userauth.data.repositories.UserRepository;
 import io.userauth.dto.auth.AuthenticatedUser;
-import io.userauth.dto.auth.ILoginForm;
+import io.userauth.dto.auth.RefreshTokenForm;
+import io.userauth.mapper.AuthenticatedUserMapper;
 import io.userauth.models.RefreshToken;
+import io.userauth.models.Users;
 
-public class AuthRefreshStartegy implements AuthStrategy {
+public class AuthRefreshStartegy implements AuthStrategy<RefreshTokenForm> {
 
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
@@ -18,8 +22,8 @@ public class AuthRefreshStartegy implements AuthStrategy {
     }
 
     @Override
-    public AuthenticatedUser getAuthentication(ILoginForm loginForm) {
-        RefreshToken refreshToken = refreshTokenRepository.findTokenById(tokenId);
+    public AuthenticatedUser getAuthentication(RefreshTokenForm loginForm) {
+        RefreshToken refreshToken = refreshTokenRepository.findTokenById(loginForm.getTokenId());
 
         if (refreshToken == null) {
             throw new IllegalArgumentException("Token not found");
@@ -38,7 +42,8 @@ public class AuthRefreshStartegy implements AuthStrategy {
             throw new IllegalArgumentException("Session revoked");
         }
         
-        
+        Users authenticatedUser = userRepository.findById(refreshToken.getUserId());
+        return AuthenticatedUserMapper.toDTO(authenticatedUser);
     }
     
 }

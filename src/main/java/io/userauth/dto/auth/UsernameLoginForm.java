@@ -3,10 +3,12 @@ package io.userauth.dto.auth;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
 import lombok.Setter;
 
 
 @Setter
+@Getter
 public class UsernameLoginForm implements ILoginForm {
 
     @NotBlank(message = "username cannot be blank")
@@ -18,14 +20,5 @@ public class UsernameLoginForm implements ILoginForm {
     @Size(max = 255, message = "password too long")
     private String password;
 
-    @Override
-    public String getIdentifier() {
-        return this.username;
-    }
-
-    @Override
-    public String getPassword() {
-        return this.password;
-    }
 
 }

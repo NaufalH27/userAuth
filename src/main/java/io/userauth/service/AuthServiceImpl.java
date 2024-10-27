@@ -33,8 +33,7 @@ public class AuthServiceImpl implements AutheService {
     }
 
     @Override
-    public void login(AuthStrategyType type, ILoginForm loginForm, HttpServletResponse response) {
-        AuthStrategy authStrategy = authStrategyFactory.createAuthStrategy(type);
+    public void login(ILoginForm loginForm, HttpServletResponse response) {
         AuthenticatedUser authenticatedUser = authStrategy.getAuthentication(loginForm);
         String accessToken = jwtHelper.generateAccessToken(authenticatedUser);
         UUID refreshToken = refreshTokenService.generateToken(authenticatedUser.getId());
