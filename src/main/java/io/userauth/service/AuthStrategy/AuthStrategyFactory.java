@@ -19,6 +19,7 @@ public class AuthStrategyFactory {
         return switch (type) {
             case USERNAME -> new AuthUsernameStrategy(userRepository);
             case EMAIL -> new AuthEmailStrategy(userRepository);
+            case REFRESH -> new AuthRefreshStartegy(userRepository);
             default -> throw new IllegalArgumentException("nonexistance authentication strategy");
         };
     }

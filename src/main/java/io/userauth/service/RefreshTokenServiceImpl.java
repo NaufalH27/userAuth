@@ -9,8 +9,6 @@ import org.springframework.stereotype.Service;
 
 import io.userauth.constant.TokenStatus;
 import io.userauth.data.repositories.RefreshTokenRepository;
-import io.userauth.dto.auth.AuthenticatedRefreshToken;
-import io.userauth.mapper.AuthenticatedRefreshTokenMapper;
 import io.userauth.models.RefreshToken;
 import jakarta.transaction.Transactional;
 
@@ -55,29 +53,6 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         return refreshToken.getUserId();
     }
 
-    @Override
-    public AuthenticatedRefreshToken getAuthenticatedRefreshToken(UUID tokenId) {
-        RefreshToken refreshToken = refreshTokenRepository.findTokenById(tokenId);
-
-        if (refreshToken == null) {
-            throw new IllegalArgumentException("Token not found");
-        }
-
-        if (new Date().after(refreshToken.getExpiredAt())) {
-            refreshToken.setStatus(TokenStatus.EXPIRED);
-            throw new IllegalArgumentException("expired Session");
-        }
-        
-        if (refreshToken.getStatus() == TokenStatus.USED){
-            throw new IllegalArgumentException("invalid Session");
-        }
-        
-        if (refreshToken.getStatus() == TokenStatus.REVOKED) {
-            throw new IllegalArgumentException("Session revoked");
-        }
-        
-        return AuthenticatedRefreshTokenMapper.toDTO(refreshToken);
-    }
 
     private Date calculateDays(Date issuedAt,int days) {
         Calendar calendar = Calendar.getInstance();

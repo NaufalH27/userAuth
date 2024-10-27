@@ -10,6 +10,7 @@ import io.userauth.common.JWTHelper;
 import io.userauth.constant.CookieName;
 import io.userauth.dto.auth.AuthenticatedUser;
 import io.userauth.dto.auth.ILoginForm;
+import io.userauth.mapper.AuthenticatedUserMapper;
 import io.userauth.service.AuthStrategy.AuthStrategy;
 import io.userauth.service.AuthStrategy.AuthStrategyFactory;
 import io.userauth.service.AuthStrategy.AuthStrategyType;
@@ -39,6 +40,16 @@ public class AuthServiceImpl implements AutheService {
         UUID refreshToken = refreshTokenService.generateToken(authenticatedUser.getId());
         CookieUtils.sendCookie(response, CookieName.ACCESS_TOKEN, accessToken);
         CookieUtils.sendCookie(response, CookieName.REFRESH_TOKEN, refreshToken.toString());
+    }
+
+    @Override
+    @Transactional
+    public void regenerateNewToken(UUID refreshToken, HttpServletResponse response) {
+        AuthenticatedUser authenticatedUser = 
+        String newAccessToken = jwtHelper.generateAccessToken(authenticatedUser);
+        UUID newRefreshToken = refreshTokenService.generateToken(userId);
+        CookieUtils.sendCookie(response, CookieName.ACCESS_TOKEN, newAccessToken );
+        CookieUtils.sendCookie(response, CookieName.REFRESH_TOKEN, newRefreshToken.toString());
     }
 
     @Override

@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import io.userauth.dto.auth.EmailLoginForm;
 import io.userauth.dto.auth.UsernameLoginForm;
-import io.userauth.service.AutheService;
 import io.userauth.service.AuthStrategy.AuthStrategyType;
+import io.userauth.service.AutheService;
 import jakarta.servlet.http.HttpServletResponse;
 
 @Controller
