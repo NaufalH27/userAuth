@@ -1,10 +1,14 @@
 package io.userauth.service.AuthStrategy;
 
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.userauth.data.repositories.RefreshTokenRepository;
 import io.userauth.data.repositories.UserRepository;
+import io.userauth.dto.auth.EmailLoginForm;
+import io.userauth.dto.auth.UsernameLoginForm;
 
 @Service
 public class AuthStrategyFactory {
@@ -18,13 +22,17 @@ public class AuthStrategyFactory {
         this.refreshTokenRepository = refreshTokenRepository;
     }
     
-    public AuthStrategy createAuthStrategy(AuthStrategyType type) {
-        return switch (type) {
-            case USERNAME -> new AuthUsernameStrategy(userRepository);
-            case EMAIL -> new AuthEmailStrategy(userRepository);
-            case REFRESH -> new AuthRefreshStartegy(userRepository, refreshTokenRepository);
-            default -> throw new IllegalArgumentException("nonexistance authentication strategy");
-        };
+    public <T> AuthStrategy createAuthStrategy(Class<T> clazz) {
+        if (clazz.equals(UsernameLoginForm.class)){
+            return new AuthUsernameStrategy(userRepository);
+        }
+        if (clazz.equals(EmailLoginForm.class)){
+            return new AuthEmailStrategy(userRepository);
+        }
+        if (clazz.equals(UUID.class)){
+            return new AuthRefreshStartegy(userRepository, refreshTokenRepository);
+        }
+        return null;
     }
 
 }

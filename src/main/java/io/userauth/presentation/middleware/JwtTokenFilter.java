@@ -19,7 +19,9 @@ import io.userauth.common.JWTHelper;
 import io.userauth.constant.CookieName;
 import io.userauth.dto.auth.CustomUserDetails;
 import io.userauth.mapper.RoleAuthorityMapper;
-import io.userauth.service.TokenRegenarationService;
+import io.userauth.service.AuthService;
+import io.userauth.service.AuthStrategy.AuthStrategy;
+import io.userauth.service.AuthStrategy.AuthStrategyFactory;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -29,12 +31,16 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final JWTHelper jwtHelper;
-    private final TokenRegenarationService tokenRegenarationService;
+    private final AuthService authService;
+    private final AuthStrategyFactory authStrategyFactory;
 
-    public JwtTokenFilter(JWTHelper jwtHelper, TokenRegenarationService tokenRegenarationService) {
+
+    public JwtTokenFilter(JWTHelper jwtHelper, AuthService authService, AuthStrategyFactory authStrategyFactory) {
         this.jwtHelper = jwtHelper;
-        this.tokenRegenarationService = tokenRegenarationService;
+        this.authService = authService;
+        this.authStrategyFactory = authStrategyFactory;
     }
+
 
     @Override
     protected void doFilterInternal(
@@ -68,9 +74,9 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
 
         } catch (ExpiredJwtException e) {
-            //TODO : catch refreshTokenException and send status unauthorized
             UUID refreshToken = UUID.fromString(CookieUtils.getCookieValue(request, CookieName.REFRESH_TOKEN));
-            tokenRegenarationService.regenerateNewToken(refreshToken, response);
+            AuthStrategy<UUID> strategy = authStrategyFactory.createAuthStrategy(UUID.class);
+            authService.authenticate(strategy, refreshToken, response);
         } catch (JwtException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Invalid JWT Token");
