@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class EmailLoginForm {
+public class EmailLoginForm implements AuthForm{
     @NotBlank(message = "email cant be blank")
     @Email(message = "Invalid email format")
     @Size(max = 255, message = "email input are too long")

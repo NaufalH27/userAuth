@@ -11,10 +11,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 
 import io.userauth.common.JWTHelper;
 import io.userauth.presentation.middleware.JwtTokenFilter;
-import io.userauth.service.AuthService;
-import io.userauth.service.AuthStrategy.AuthStrategy;
-import io.userauth.service.AuthStrategy.AuthStrategyFactory;
-import io.userauth.service.authService;
+import io.userauth.service.auth.AuthService;
 
 @Configuration
 @EnableWebSecurity
@@ -22,13 +19,11 @@ public class SecurityConfig {
 
     private final JWTHelper jwtHelper;
     private final AuthService authService;
-    private final AuthStrategyFactory AuthStrategyFactory;
 
     @Autowired
-    public SecurityConfig(JWTHelper jwtHelper, AuthService authService, AuthStrategyFactory AuthStrategyFactory) {
+    public SecurityConfig(JWTHelper jwtHelper, AuthService authService) {
         this.jwtHelper = jwtHelper;
         this.authService = authService;
-        this.AuthStrategyFactory = AuthStrategyFactory;
     }
 
     @Bean
@@ -38,15 +33,14 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth 
                 .anyRequest().authenticated() 
             ).addFilterBefore(new JwtTokenFilter(this.jwtHelper, 
-                                                this.authService, 
-                                                this.AuthStrategyFactory
+                                                this.authService
                                                 ), BasicAuthenticationFilter.class);
             return http.build();
     }
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().requestMatchers("/login/**", "/logout", "/signup"); 
+        return (web) -> web.ignoring().requestMatchers("/login/**", "/signup"); 
     }
 
 

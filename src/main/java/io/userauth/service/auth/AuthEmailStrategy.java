@@ -1,18 +1,17 @@
-package io.userauth.service.AuthStrategy;
+package io.userauth.service.auth;
 
-
-
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
 import io.userauth.common.PasswordUtils;
 import io.userauth.data.repositories.UserRepository;
+import io.userauth.dto.auth.AuthForm;
 import io.userauth.dto.auth.AuthenticatedUser;
 import io.userauth.dto.auth.EmailLoginForm;
 import io.userauth.mapper.AuthenticatedUserMapper;
 import io.userauth.models.Users;
 
-@Service
-public class AuthEmailStrategy implements AuthStrategy<EmailLoginForm> {
+@Component
+public class AuthEmailStrategy implements AuthStrategy {
     
     private final UserRepository userRepository;
 
@@ -21,13 +20,14 @@ public class AuthEmailStrategy implements AuthStrategy<EmailLoginForm> {
     }
 
     @Override
-    public AuthenticatedUser getAuthentication(EmailLoginForm loginForm) {
-        Users entity = userRepository.findByEmail(loginForm.getEmail());
+    public AuthenticatedUser getAuthentication(AuthForm loginForm) {
+        EmailLoginForm emailForm = (EmailLoginForm) loginForm;
+        Users entity = userRepository.findByEmail(emailForm.getEmail());
 
         if (entity == null){
             throw new IllegalArgumentException("user not found");
         }
-        if (!PasswordUtils.verifyPassword(loginForm.getPassword(), entity.getPasswordHash())){
+        if (!PasswordUtils.verifyPassword(emailForm.getPassword(), entity.getPasswordHash())){
             throw new IllegalArgumentException("email password");
         }
         

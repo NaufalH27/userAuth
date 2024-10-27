@@ -1,13 +1,13 @@
-package io.userauth.service.AuthStrategy;
-
-import java.util.UUID;
+package io.userauth.service.auth;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import io.userauth.data.repositories.RefreshTokenRepository;
 import io.userauth.data.repositories.UserRepository;
+import io.userauth.dto.auth.AuthForm;
 import io.userauth.dto.auth.EmailLoginForm;
+import io.userauth.dto.auth.RefreshTokenForm;
 import io.userauth.dto.auth.UsernameLoginForm;
 
 @Service
@@ -17,22 +17,23 @@ public class AuthStrategyFactory {
     private final RefreshTokenRepository refreshTokenRepository;
 
     @Autowired
-    public AuthStrategyFactory(UserRepository userRepository, io.userauth.data.repositories.RefreshTokenRepository refreshTokenRepository){
-        this.userRepository = userRepository;
+    protected AuthStrategyFactory(UserRepository userRepository, RefreshTokenRepository refreshTokenRepository){
+        this.userRepository = userRepository;  
         this.refreshTokenRepository = refreshTokenRepository;
     }
     
-    public <T> AuthStrategy createAuthStrategy(Class<T> clazz) {
-        if (clazz.equals(UsernameLoginForm.class)){
+    public AuthStrategy createAuthStrategy(AuthForm authForm) {
+        if(authForm instanceof UsernameLoginForm) {
             return new AuthUsernameStrategy(userRepository);
         }
-        if (clazz.equals(EmailLoginForm.class)){
+        if(authForm instanceof EmailLoginForm) {
             return new AuthEmailStrategy(userRepository);
         }
-        if (clazz.equals(UUID.class)){
-            return new AuthRefreshStartegy(userRepository, refreshTokenRepository);
+        if(authForm instanceof RefreshTokenForm) {
+            return new AuthRefreshStrategy(userRepository, refreshTokenRepository);
         }
-        return null;
+
+        throw new IllegalArgumentException("unsupported authentication type");
     }
 
 }

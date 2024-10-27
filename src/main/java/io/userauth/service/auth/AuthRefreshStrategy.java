@@ -1,29 +1,32 @@
-package io.userauth.service.AuthStrategy;
+package io.userauth.service.auth;
 
 import java.util.Date;
-import java.util.UUID;
 
 import io.userauth.constant.TokenStatus;
 import io.userauth.data.repositories.RefreshTokenRepository;
 import io.userauth.data.repositories.UserRepository;
+import io.userauth.dto.auth.AuthForm;
 import io.userauth.dto.auth.AuthenticatedUser;
+import io.userauth.dto.auth.RefreshTokenForm;
 import io.userauth.mapper.AuthenticatedUserMapper;
 import io.userauth.models.RefreshToken;
 import io.userauth.models.Users;
 
-public class AuthRefreshStartegy implements AuthStrategy<UUID> {
+public class AuthRefreshStrategy implements AuthStrategy {
 
     private final UserRepository userRepository;
     private final RefreshTokenRepository refreshTokenRepository;
 
-    public AuthRefreshStartegy(UserRepository userRepository, RefreshTokenRepository refreshTokenRepository) {
+    AuthRefreshStrategy(UserRepository userRepository, RefreshTokenRepository refreshTokenRepository) {
         this.userRepository = userRepository;
         this.refreshTokenRepository = refreshTokenRepository;
     }
 
+
     @Override
-    public AuthenticatedUser getAuthentication(UUID tokenId) {
-        RefreshToken refreshToken = refreshTokenRepository.findTokenById(tokenId);
+    public AuthenticatedUser getAuthentication(AuthForm loginForm) {
+        RefreshTokenForm refreshTokenForm = (RefreshTokenForm) loginForm;
+        RefreshToken refreshToken = refreshTokenRepository.findTokenById(refreshTokenForm.getTokenId());
 
         if (refreshToken == null) {
             throw new IllegalArgumentException("Token not found");

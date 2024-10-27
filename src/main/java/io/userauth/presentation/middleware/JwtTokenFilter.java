@@ -18,10 +18,9 @@ import io.userauth.common.CookieUtils;
 import io.userauth.common.JWTHelper;
 import io.userauth.constant.CookieName;
 import io.userauth.dto.auth.CustomUserDetails;
+import io.userauth.dto.auth.RefreshTokenForm;
 import io.userauth.mapper.RoleAuthorityMapper;
-import io.userauth.service.AuthService;
-import io.userauth.service.AuthStrategy.AuthStrategy;
-import io.userauth.service.AuthStrategy.AuthStrategyFactory;
+import io.userauth.service.auth.AuthService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,13 +31,11 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final JWTHelper jwtHelper;
     private final AuthService authService;
-    private final AuthStrategyFactory authStrategyFactory;
 
 
-    public JwtTokenFilter(JWTHelper jwtHelper, AuthService authService, AuthStrategyFactory authStrategyFactory) {
+    public JwtTokenFilter(JWTHelper jwtHelper, AuthService authService) {
         this.jwtHelper = jwtHelper;
         this.authService = authService;
-        this.authStrategyFactory = authStrategyFactory;
     }
 
 
@@ -64,10 +61,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
 
         try {
-
                                     
             UsernamePasswordAuthenticationToken authentication = convertAccessTokenToUserDetails(accessToken);
-
             authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));    
             SecurityContextHolder.getContext().setAuthentication(authentication);
 
@@ -75,8 +70,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         } catch (ExpiredJwtException e) {
             UUID refreshToken = UUID.fromString(CookieUtils.getCookieValue(request, CookieName.REFRESH_TOKEN));
-            AuthStrategy<UUID> strategy = authStrategyFactory.createAuthStrategy(UUID.class);
-            authService.authenticate(strategy, refreshToken, response);
+            refreshSession(refreshToken, response);
         } catch (JwtException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Invalid JWT Token");
@@ -85,6 +79,18 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             response.getWriter().write("illegal jwt Token");
         }
     } 
+
+
+    private void refreshSession(UUID refreshToken, HttpServletResponse response) throws ServletException, IOException {
+        try {
+            RefreshTokenForm refreshTokenForm = new RefreshTokenForm();
+            refreshTokenForm.setTokenId(refreshToken);
+            authService.authenticate(refreshTokenForm, response);    
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("Expired Session Token");
+        }
+    }
 
     private UsernamePasswordAuthenticationToken convertAccessTokenToUserDetails(String accessToken) {
         String subject = jwtHelper.getSubject(accessToken);

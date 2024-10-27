@@ -9,7 +9,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class UsernameLoginForm {
+public class UsernameLoginForm implements AuthForm {
     @NotBlank(message = "username cannot be blank")
     @Size(max = 20, message = "username too long")
     @Pattern(regexp = "^[a-zA-Z0-9._-]+$")

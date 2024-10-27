@@ -1,11 +1,11 @@
-package io.userauth.service;
+package io.userauth.service.auth;
 
-import io.userauth.service.AuthStrategy.AuthStrategy;
+import io.userauth.dto.auth.AuthForm;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 public interface AuthService {
-    public <T> void authenticate(AuthStrategy<T> authStrategy, T authForm, HttpServletResponse response);
+    public void authenticate(AuthForm authForm, HttpServletResponse response);
     public void logout(HttpServletRequest request, HttpServletResponse response);
 } 
 
