@@ -11,6 +11,7 @@ import io.userauth.dto.auth.RefreshTokenForm;
 import io.userauth.mapper.AuthenticatedUserMapper;
 import io.userauth.models.RefreshToken;
 import io.userauth.models.Users;
+import jakarta.transaction.Transactional;
 
 public class AuthRefreshStrategy implements AuthStrategy {
 
@@ -24,6 +25,7 @@ public class AuthRefreshStrategy implements AuthStrategy {
 
 
     @Override
+    @Transactional
     public AuthenticatedUser getAuthentication(AuthForm loginForm) {
         RefreshTokenForm refreshTokenForm = (RefreshTokenForm) loginForm;
         RefreshToken refreshToken = refreshTokenRepository.findTokenById(refreshTokenForm.getTokenId());
@@ -52,6 +54,7 @@ public class AuthRefreshStrategy implements AuthStrategy {
         }
 
         refreshToken.setStatus(TokenStatus.USED);
+        refreshTokenRepository.save(refreshToken);
         return AuthenticatedUserMapper.toDTO(authenticatedUser);
     }
     

@@ -31,14 +31,6 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    @Transactional
-    public void logout(HttpServletRequest request, HttpServletResponse response) {
-        String refreshToken = CookieUtils.getCookieValue(request, CookieName.REFRESH_TOKEN);
-        refreshTokenService.revokeToken(UUID.fromString(refreshToken));
-        CookieUtils.eraseCookie(CookieName.REFRESH_TOKEN, response);
-    }
-
-    @Override
     public void authenticate(AuthForm authForm, HttpServletResponse response) {
         AuthStrategy authStrategy = authStrategyFactory.createAuthStrategy(authForm);
         AuthenticatedUser user = authStrategy.getAuthentication(authForm);
@@ -46,6 +38,15 @@ public class AuthServiceImpl implements AuthService {
         UUID refreshToken = refreshTokenService.generateToken(user.getId());
         CookieUtils.sendCookie(response, CookieName.ACCESS_TOKEN, accessToken);
         CookieUtils.sendCookie(response, CookieName.REFRESH_TOKEN, refreshToken.toString());
+    }
+
+    @Override
+    @Transactional
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        String refreshToken = CookieUtils.getCookieValue(request, CookieName.REFRESH_TOKEN);
+        refreshTokenService.revokeToken(UUID.fromString(refreshToken));
+        CookieUtils.eraseCookie(CookieName.ACCESS_TOKEN, response);
+        CookieUtils.eraseCookie(CookieName.REFRESH_TOKEN, response);
     }
     
 }

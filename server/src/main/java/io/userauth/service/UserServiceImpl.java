@@ -34,13 +34,13 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void createUser(UserCreationForm creationForm) {
-
         if(userRepository.findByName(creationForm.getUsername()) != null){
             throw new IllegalArgumentException("username already used");
         }
         if(userRepository.findByEmail(creationForm.getEmail()) != null){
             throw new IllegalArgumentException("email already used");
         }
+
         Users registeredUser = new Users();
         registeredUser.setUsername(creationForm.getUsername());
         registeredUser.setEmail(creationForm.getEmail());
@@ -60,6 +60,7 @@ public class UserServiceImpl implements UserService {
         if (user == null){
             throw new IllegalArgumentException("user not found");
         }
+
         return UserDTOMapper.toDTO(user);
     }
 
@@ -70,6 +71,7 @@ public class UserServiceImpl implements UserService {
         if (user == null){
             throw new IllegalArgumentException("user not found");
         }
+
         return UserDTOMapper.toDTO(user);
     }
 
@@ -80,6 +82,7 @@ public class UserServiceImpl implements UserService {
         if (user == null){
             throw new IllegalArgumentException("user not found");
         }
+
         return UserDTOMapper.toDTO(user);
     }
     
