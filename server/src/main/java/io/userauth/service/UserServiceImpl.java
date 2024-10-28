@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
         userRole.add(roleRepository.findRoleByName(RoleName.USER));
         registeredUser.setRoles(userRole);
 
-        userRepository.createUser(registeredUser);
+        userRepository.save(registeredUser);
     }
 
     @Override
@@ -83,7 +83,6 @@ public class UserServiceImpl implements UserService {
         return UserDTOMapper.toDTO(user);
     }
     
-
     @Override
     @Transactional
     public void updateUser(UUID id, UserDTO newData) {

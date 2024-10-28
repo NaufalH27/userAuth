@@ -5,16 +5,16 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import io.userauth.dto.auth.CustomUserDetails;
 import io.userauth.dto.user.UserDTO;
 import io.userauth.service.UserService;
 
-@Controller
+@RestController
 @RequestMapping(value = "/users")
 public class UserController {
     
@@ -33,10 +33,16 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ROLE_USER')")
-    @DeleteMapping(value ="/delete")
-    public ResponseEntity<Void> deleteUser(@AuthenticationPrincipal CustomUserDetails userDetails, UserDTO newData) {
+    @DeleteMapping(value ="/update")
+    public ResponseEntity<Void> updateUser(@AuthenticationPrincipal CustomUserDetails userDetails, UserDTO newData) {
         userService.updateUser(userDetails.getId(), newData);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ROLE_USER')")
+    @DeleteMapping(value ="/delete")
+    public ResponseEntity<Void> deleteUser(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        userService.deleteUser(userDetails.getId());
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }
