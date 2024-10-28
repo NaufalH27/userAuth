@@ -1,7 +1,5 @@
 package io.userauth.presentation.controllers;
 
-import java.util.UUID;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,8 +8,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import io.userauth.dto.auth.CustomUserDetails;
@@ -31,21 +27,15 @@ public class UserController {
 
     @PreAuthorize("hasRole('ROLE_USER')")
     @GetMapping(value ="/me")
-    public ResponseEntity<String> getMeProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<UserDTO> getMeProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
         UserDTO user = userService.getUserById(userDetails.getId()); 
-        return new ResponseEntity<>("HI " + user.getUsername() +"\n" + user.getEmail(), HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_USER')")
     @DeleteMapping(value ="/delete")
-    public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
-        userService.deleteUser(id);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/update/email")
-    public ResponseEntity<Void> updateEmail(@PathVariable UUID id, String newEmail) {
-        userService.updateEmail(id, newEmail);
+    public ResponseEntity<Void> deleteUser(@AuthenticationPrincipal CustomUserDetails userDetails, UserDTO newData) {
+        userService.updateUser(userDetails.getId(), newData);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -86,9 +86,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void updateEmail(UUID id, String newEmail) {
+    public void updateUser(UUID id, UserDTO newData) {
         Users user = userRepository.findById(id);
-        user.setEmail(newEmail);
+        user.setEmail(newData.getEmail());
+        user.setUsername(newData.getUsername());
+        userRepository.createUser(user);
     }
 
     @Override

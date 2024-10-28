@@ -10,6 +10,6 @@ public interface UserService {
     public UserDTO getUserById(UUID id);
     public UserDTO getUserByEmail(String email);
     public UserDTO getUserByName(String name);
-    public void updateEmail(UUID id, String newEmail);
+    public void updateUser(UUID id, UserDTO newData);
     public void deleteUser(UUID id);
 }
