@@ -36,7 +36,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
         newRefreshToken.setIssuedAt(issuedAt);
         newRefreshToken.setExpiredAt(expirateAt);
-        refreshTokenRepository.addToken(newRefreshToken);
+        refreshTokenRepository.save(newRefreshToken);
         return newRefreshToken.getToken();
     }
 

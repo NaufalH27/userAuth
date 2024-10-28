@@ -6,5 +6,5 @@ import io.userauth.models.RefreshToken;
 
 public interface RefreshTokenRepository {
     public RefreshToken findTokenById(UUID id);
-    public void addToken(RefreshToken refreshToken);
+    public void save(RefreshToken refreshToken);
 }

@@ -90,7 +90,7 @@ public class UserServiceImpl implements UserService {
         Users user = userRepository.findById(id);
         user.setEmail(newData.getEmail());
         user.setUsername(newData.getUsername());
-        userRepository.createUser(user);
+        userRepository.save(user);
     }
 
     @Override

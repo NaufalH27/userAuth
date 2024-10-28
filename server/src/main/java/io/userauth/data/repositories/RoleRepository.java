@@ -8,5 +8,5 @@ public interface RoleRepository {
     public Roles findRoleById(long id);
     public List<Roles> getAllRoles();
     public Roles findRoleByName(String roleName);
-    public void createRole(Roles role);
+    public void save(Roles role);
 }

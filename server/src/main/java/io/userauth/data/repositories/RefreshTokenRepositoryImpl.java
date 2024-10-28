@@ -17,7 +17,7 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository{
     }
 
     @Override
-    public void addToken(RefreshToken refreshToken) {
+    public void save(RefreshToken refreshToken) {
         entityManager.persist(refreshToken);
     }
 

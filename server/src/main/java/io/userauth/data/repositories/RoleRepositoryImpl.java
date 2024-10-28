@@ -36,7 +36,7 @@ public class RoleRepositoryImpl implements RoleRepository{
     }
 
     @Override
-    public void createRole(Roles role){
+    public void save(Roles role){
         entityManager.persist(role);
     }
 

@@ -22,7 +22,7 @@ public class UserRepositoryImpl implements UserRepository {
 
 
     @Override
-    public void createUser(Users user) {
+    public void save(Users user) {
         entityManager.persist(user);
     }
 
