@@ -18,7 +18,6 @@ import io.userauth.common.CookieUtils;
 import io.userauth.common.JWTHelper;
 import io.userauth.constant.CookieName;
 import io.userauth.dto.auth.CustomUserDetails;
-import io.userauth.dto.auth.RefreshTokenForm;
 import io.userauth.mapper.RoleAuthorityMapper;
 import io.userauth.service.AuthService;
 import jakarta.servlet.FilterChain;
@@ -83,9 +82,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     private void refreshSession(UUID refreshToken, HttpServletResponse response) throws ServletException, IOException {
         try {
-            RefreshTokenForm refreshTokenForm = new RefreshTokenForm();
-            refreshTokenForm.setTokenId(refreshToken);
-            authService.authenticate(refreshTokenForm, response);    
+            authService.regenerateNewToken(refreshToken, response);  
         } catch (Exception e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Expired Session Token");

@@ -24,13 +24,13 @@ public class LoginController {
     
     @PostMapping(value = "/username")
     public ResponseEntity<?> getAuthenticationByName(@RequestBody UsernameLoginForm loginForm, HttpServletResponse response) {
-        authService.authenticate(loginForm, response);
+        authService.login(loginForm, response);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(value = "/email")
     public ResponseEntity<?> getAuthenticationByEmail(@RequestBody EmailLoginForm loginForm, HttpServletResponse response) {
-        authService.authenticate(loginForm, response);
+        authService.login(loginForm, response);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 }
