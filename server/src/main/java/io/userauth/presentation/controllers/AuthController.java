@@ -14,6 +14,7 @@ import io.userauth.constant.CookieName;
 import io.userauth.dto.auth.EmailLoginForm;
 import io.userauth.dto.auth.UsernameLoginForm;
 import io.userauth.service.AuthService;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -29,26 +30,31 @@ public class AuthController {
     
     @PostMapping(value = "/login/username")
     public ResponseEntity<?> getAuthenticationByName(@RequestBody UsernameLoginForm loginForm, HttpServletResponse response) {
-        authService.login(loginForm, response);
+        authService.login(loginForm);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(value = "/login/email")
     public ResponseEntity<?> getAuthenticationByEmail(@RequestBody EmailLoginForm loginForm, HttpServletResponse response) {
-        authService.login(loginForm, response);
+        authService.login(loginForm);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(value = "/logout")
-    public ResponseEntity<?> login(HttpServletRequest request, HttpServletResponse response) {
-        authService.logout(request, response);
+    public ResponseEntity<?> login(Htt  pServletRequest request, HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        String refreshToken = CookieUtils.getCookieValue(cookies, CookieName.REFRESH_TOKEN);
+        authService.logout(UUID.fromString(refreshToken));
+        CookieUtils.eraseCookie(CookieName.REFRESH_TOKEN, response);
+        CookieUtils.eraseCookie(CookieName.ACCESS_TOKEN, response);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PostMapping(value = "/refresh-token")
-    public ResponseEntity<?> refreshSession(HttpServletRequest request, HttpServletResponse response) {
-        String refreshToken = CookieUtils.getCookieValue(request, CookieName.REFRESH_TOKEN);
-        authService.regenerateNewToken(UUID.fromString(refreshToken), response);
+    public ResponseEntity<?> refreshToken(HttpServletRequest request, HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        String refreshToken = CookieUtils.getCookieValue(cookies, CookieName.REFRESH_TOKEN);
+        authService.regenerateNewToken(UUID.fromString(refreshToken));
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

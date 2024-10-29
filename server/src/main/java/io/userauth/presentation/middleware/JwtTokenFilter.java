@@ -22,6 +22,7 @@ import io.userauth.mapper.RoleAuthorityMapper;
 import io.userauth.service.AuthService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -47,7 +48,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             return;
         }
 
-        String accessToken = CookieUtils.getCookieValue(request, CookieName.ACCESS_TOKEN);
+        Cookie[] cookie = request.getCookies();
+        String accessToken = CookieUtils.getCookieValue(cookie, CookieName.ACCESS_TOKEN);
 
         if (accessToken == null) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
