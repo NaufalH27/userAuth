@@ -29,14 +29,10 @@ import jakarta.servlet.http.HttpServletResponse;
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     private final JWTHelper jwtHelper;
-    private final AuthService authService;
 
-
-    public JwtTokenFilter(JWTHelper jwtHelper, AuthService authService) {
+    public JwtTokenFilter(JWTHelper jwtHelper) {
         this.jwtHelper = jwtHelper;
-        this.authService = authService;
     }
-
 
     @Override
     protected void doFilterInternal(
@@ -68,8 +64,8 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
 
         } catch (ExpiredJwtException e) {
-            UUID refreshToken = UUID.fromString(CookieUtils.getCookieValue(request, CookieName.REFRESH_TOKEN));
-            refreshSession(refreshToken, response);
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("expired JWT Token");
         } catch (JwtException e) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Invalid JWT Token");
@@ -79,15 +75,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
     } 
 
-
-    private void refreshSession(UUID refreshToken, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            authService.regenerateNewToken(refreshToken, response);  
-        } catch (Exception e) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("Expired Session Token");
-        }
-    }
 
     private UsernamePasswordAuthenticationToken convertAccessTokenToUserDetails(String accessToken) {
         String subject = jwtHelper.getSubject(accessToken);
