@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.userauth.common.CookieUtils;
 import io.userauth.common.JWTHelper;
@@ -23,7 +24,6 @@ import io.userauth.presentation.exception.AuthException;
 import io.userauth.presentation.exception.RefreshTokenException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.transaction.Transactional;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -41,29 +41,8 @@ public class AuthServiceImpl implements AuthService {
   
 
     @Override
+    @Transactional(readOnly = true)
     public void login(AuthForm authForm, HttpServletResponse response) throws AuthException {
-        AuthenticatedUser user = this.getAuthenticatedUser(authForm);
-        this.sendToken(user, response);
-    }
-
-    @Override
-    @Transactional 
-    public void logout(HttpServletRequest request, HttpServletResponse response) {
-        String refreshToken = CookieUtils.getCookieValue(request, CookieName.REFRESH_TOKEN);
-        refreshTokenService.revokeToken(UUID.fromString(refreshToken));
-        CookieUtils.eraseCookie(CookieName.ACCESS_TOKEN, response);
-        CookieUtils.eraseCookie(CookieName.REFRESH_TOKEN, response);
-    }
-
-    @Override
-    public void regenerateNewToken(UUID refreshToken, HttpServletResponse response) throws RefreshTokenException {
-        UUID userId = refreshTokenService.useToken(refreshToken);
-        Users user = userRepository.findById(userId);
-        AuthenticatedUser authenticatedUser = AuthenticatedUserMapper.toDTO(user);
-        this.sendToken(authenticatedUser, response);
-    }
-   
-    private AuthenticatedUser getAuthenticatedUser(AuthForm authForm) throws AuthException {
         Users user = switch (authForm) {
             case UsernameLoginForm form -> userRepository.findByName(form.getUsername());
             case EmailLoginForm form -> userRepository.findByEmail(form.getEmail());
@@ -79,9 +58,28 @@ public class AuthServiceImpl implements AuthService {
             throw new AuthException(userErrorCode, "User is not active");
         }
 
-        return AuthenticatedUserMapper.toDTO(user);
+        AuthenticatedUser authenticatedUser = AuthenticatedUserMapper.toDTO(user);
+        this.sendToken(authenticatedUser, response);
     }
 
+    @Override
+    @Transactional 
+    public void logout(HttpServletRequest request, HttpServletResponse response) {
+        String refreshToken = CookieUtils.getCookieValue(request, CookieName.REFRESH_TOKEN);
+        refreshTokenService.revokeToken(UUID.fromString(refreshToken));
+        CookieUtils.eraseCookie(CookieName.ACCESS_TOKEN, response);
+        CookieUtils.eraseCookie(CookieName.REFRESH_TOKEN, response);
+    }
+
+    @Override
+    @Transactional
+    public void regenerateNewToken(UUID refreshToken, HttpServletResponse response) throws RefreshTokenException {
+        UUID userId = refreshTokenService.useToken(refreshToken);
+        Users user = userRepository.findById(userId);
+        AuthenticatedUser authenticatedUser = AuthenticatedUserMapper.toDTO(user);
+        this.sendToken(authenticatedUser, response);
+    }
+   
     private void sendToken(AuthenticatedUser user, HttpServletResponse response) {
         String accessToken = jwtHelper.generateAccessToken(user);
         UUID refreshToken = refreshTokenService.generateToken(user.getId());
