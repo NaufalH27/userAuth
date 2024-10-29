@@ -9,7 +9,10 @@ import org.springframework.stereotype.Service;
 
 import io.userauth.constant.TokenStatus;
 import io.userauth.data.repositories.RefreshTokenRepository;
+import io.userauth.mapper.RefreshTokenErrorCodeMapper;
 import io.userauth.models.RefreshToken;
+import io.userauth.presentation.exception.RefreshTokenErrorCode;
+import io.userauth.presentation.exception.RefreshTokenException;
 import jakarta.transaction.Transactional;
 
 @Service
@@ -17,7 +20,6 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     @Value("${refresh.token.expiry.days}")
     private int refreshTokenExpiryDays;
-    
     private final RefreshTokenRepository refreshTokenRepository;
 
     public RefreshTokenServiceImpl(RefreshTokenRepository refreshTokenRepository) {
@@ -53,6 +55,31 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         return refreshToken.getUserId();
     }
 
+    
+    @Override
+    public UUID useToken(UUID token) throws RefreshTokenException {
+        RefreshToken refreshToken = refreshTokenRepository.findTokenById(token);
+
+        if (refreshToken == null) {
+            throw new RefreshTokenException(RefreshTokenErrorCode.TOKEN_NONEXISTENCE,"Token not found");
+        }
+
+
+        if (new Date().after(refreshToken.getExpiredAt())) {
+            refreshToken.setStatus(TokenStatus.EXPIRED);
+            throw new RefreshTokenException(RefreshTokenErrorCode.TOKEN_EXPIRED, "expired Session");
+        }
+
+        if (refreshToken.getStatus() != TokenStatus.ACTIVE) {
+            RefreshTokenErrorCode errorCode = RefreshTokenErrorCodeMapper.fromTokenStatus(refreshToken.getStatus());
+            throw new RefreshTokenException(errorCode,"invalid session, please login again");
+        }
+        
+        refreshToken.setStatus(TokenStatus.USED);
+        refreshTokenRepository.save(refreshToken);
+        return refreshToken.getUserId();
+
+    }
 
     private Date calculateDays(Date issuedAt,int days) {
         Calendar calendar = Calendar.getInstance();
