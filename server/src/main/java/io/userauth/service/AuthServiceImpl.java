@@ -49,6 +49,10 @@ public class AuthServiceImpl implements AuthService {
             default -> throw new AuthException(AuthErrorCode.UNSUPPORTED_AUTH, "Unsupported authentication type");
         };
         
+        if(user == null) {
+            throw new AuthException(AuthErrorCode.USER_NOT_FOUND, "User not found");
+        }
+
         if (!PasswordUtils.verifyPassword(authForm.getPassword(), user.getPasswordHash())){
             throw new AuthException(AuthErrorCode.INVALID_PASSWORD, "Invalid Login Password");
         }
@@ -74,7 +78,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public void regenerateNewToken(UUID refreshToken, HttpServletResponse response) throws RefreshTokenException {
-        UUID userId = refreshTokenService.useToken(refreshToken);
+        UUID userId = refreshTokenService.consumeToken(refreshToken);
         Users user = userRepository.findById(userId);
         AuthenticatedUser authenticatedUser = AuthenticatedUserMapper.toDTO(user);
         this.sendToken(authenticatedUser, response);

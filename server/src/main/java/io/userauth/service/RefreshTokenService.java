@@ -9,5 +9,5 @@ public interface RefreshTokenService {
     public void revokeToken(UUID token);
     public UUID generateToken(UUID userIdIssuer);
     public UUID getUserIdIssuer(UUID token);
-    public UUID useToken(UUID token) throws RefreshTokenException;
+    public UUID consumeToken(UUID token) throws RefreshTokenException;
 }

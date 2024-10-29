@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import io.userauth.constant.TokenStatus;
 import io.userauth.data.repositories.RefreshTokenRepository;
@@ -13,7 +14,6 @@ import io.userauth.mapper.RefreshTokenErrorCodeMapper;
 import io.userauth.models.RefreshToken;
 import io.userauth.presentation.exception.RefreshTokenErrorCode;
 import io.userauth.presentation.exception.RefreshTokenException;
-import jakarta.transaction.Transactional;
 
 @Service
 public class RefreshTokenServiceImpl implements RefreshTokenService {
@@ -50,6 +50,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
     }
 
     @Override
+    @Transactional
     public UUID getUserIdIssuer(UUID token) {
         RefreshToken refreshToken = refreshTokenRepository.findTokenById(token);
         return refreshToken.getUserId();
@@ -57,7 +58,8 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     
     @Override
-    public UUID useToken(UUID token) throws RefreshTokenException {
+    @Transactional
+    public UUID consumeToken(UUID token) throws RefreshTokenException {
         RefreshToken refreshToken = refreshTokenRepository.findTokenById(token);
 
         if (refreshToken == null) {
