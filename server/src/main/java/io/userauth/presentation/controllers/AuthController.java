@@ -13,6 +13,8 @@ import io.userauth.common.CookieUtils;
 import io.userauth.constant.CookieName;
 import io.userauth.dto.auth.EmailLoginForm;
 import io.userauth.dto.auth.UsernameLoginForm;
+import io.userauth.presentation.exception.AuthException;
+import io.userauth.presentation.exception.RefreshTokenException;
 import io.userauth.service.AuthService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,18 +32,26 @@ public class AuthController {
     
     @PostMapping(value = "/login/username")
     public ResponseEntity<?> getAuthenticationByName(@RequestBody UsernameLoginForm loginForm, HttpServletResponse response) {
-        authService.login(loginForm);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            authService.login(loginForm);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (AuthException e) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }        
     }
 
     @PostMapping(value = "/login/email")
     public ResponseEntity<?> getAuthenticationByEmail(@RequestBody EmailLoginForm loginForm, HttpServletResponse response) {
-        authService.login(loginForm);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            authService.login(loginForm);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (AuthException e) {
+            return new ResponseEntity<>(HttpStatus.OK);   
+        }
     }
 
     @PostMapping(value = "/logout")
-    public ResponseEntity<?> login(Htt  pServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<?> login(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
         String refreshToken = CookieUtils.getCookieValue(cookies, CookieName.REFRESH_TOKEN);
         authService.logout(UUID.fromString(refreshToken));
@@ -54,8 +64,12 @@ public class AuthController {
     public ResponseEntity<?> refreshToken(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
         String refreshToken = CookieUtils.getCookieValue(cookies, CookieName.REFRESH_TOKEN);
-        authService.regenerateNewToken(UUID.fromString(refreshToken));
-        return new ResponseEntity<>(HttpStatus.OK);
+        try {
+            authService.regenerateNewToken(UUID.fromString(refreshToken));
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch(RefreshTokenException e) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
     }
 
 }

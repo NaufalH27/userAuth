@@ -25,7 +25,6 @@ public class RefreshTokenRepositoryMock {
         RefreshToken mockRefreshToken = new RefreshToken();
         mockRefreshToken.setToken(UUID.randomUUID());
         mockRefreshToken.setUserId(UUID.randomUUID());
-        refreshTokenRepository.addToken(mockRefreshToken);
         assertNotNull(refreshTokenRepository.findTokenById(mockRefreshToken.getToken()));
     }
 
