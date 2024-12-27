@@ -17,7 +17,6 @@ import io.userauth.dto.auth.AuthenticatedUser;
 import io.userauth.dto.auth.EmailLoginForm;
 import io.userauth.dto.auth.TokenDTO;
 import io.userauth.dto.auth.UsernameLoginForm;
-import io.userauth.mapper.AuthErrorCodeMapper;
 import io.userauth.mapper.AuthenticatedUserMapper;
 import io.userauth.models.Users;
 import io.userauth.presentation.exception.AuthErrorCode;
@@ -57,8 +56,7 @@ public class AuthServiceImpl implements AuthService {
         }
 
         if(user.getStatus() != UserStatus.ACTIVE) {
-            AuthErrorCode userErrorCode = AuthErrorCodeMapper.fromUserStatus(user.getStatus());
-            throw new AuthException(userErrorCode, "User is not active");
+            throw new AuthException(AuthErrorCode.fromUserStatus(user.getStatus()), "User is not active");
         }
 
         AuthenticatedUser authenticatedUser = AuthenticatedUserMapper.toDTO(user);

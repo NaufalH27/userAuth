@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import io.userauth.constant.TokenStatus;
 import io.userauth.data.repositories.RefreshTokenRepository;
-import io.userauth.mapper.RefreshTokenErrorCodeMapper;
 import io.userauth.models.RefreshToken;
 import io.userauth.presentation.exception.RefreshTokenErrorCode;
 import io.userauth.presentation.exception.RefreshTokenException;
@@ -73,8 +72,7 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         }
 
         if (refreshToken.getStatus() != TokenStatus.ACTIVE) {
-            RefreshTokenErrorCode errorCode = RefreshTokenErrorCodeMapper.fromTokenStatus(refreshToken.getStatus());
-            throw new RefreshTokenException(errorCode,"invalid session, please login again");
+            throw new RefreshTokenException(RefreshTokenErrorCode.fromTokenStatus(refreshToken.getStatus()),"invalid session, please login again");
         }
         
         refreshToken.setStatus(TokenStatus.USED);
